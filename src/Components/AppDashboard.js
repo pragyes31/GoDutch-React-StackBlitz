@@ -32,10 +32,10 @@ function AddNewBtns({ toggleModal }) {
   );
 }
 
-function AddNewFriendModal({ isOpen, toggleModal }) {
+function AddNewFriendModal({ toggleModal }) {
   return (
     <Modal
-      isOpen={isOpen}
+    isOpen={true}
       contentLabel="Add New Friend"
       ariaHideApp={false}
       className="add-friend-modal modal-window"
@@ -62,9 +62,9 @@ function AddNewFriendModal({ isOpen, toggleModal }) {
   );
 }
 
-const AddNewExpenseModal = ({ isOpen, toggleModal }) => (
+const AddNewExpenseModal = ({toggleModal }) => (
   <Modal
-      isOpen={isOpen}
+      isOpen={true}
       contentLabel="Add New Expense"
       ariaHideApp={false}
       className="add-expense-modal modal-window"
@@ -132,14 +132,15 @@ export default class AppDashboard extends React.Component {
         <Header title="Go-Dutch App" />
         <AddNewBtns toggleModal={this.toggleModal} />
         <UsersData />
-        <AddNewFriendModal
-          isOpen={this.state.friendModal}
+        {this.state.friendModal && <AddNewFriendModal
+         toggleModal={this.toggleModal}
+        /> }
+        {
+          this.state.expenseModal && <AddNewExpenseModal
           toggleModal={this.toggleModal}
         />
-        <AddNewExpenseModal
-          isOpen={this.state.expenseModal}
-          toggleModal={this.toggleModal}
-        />
+        }
+        
       </div>
     );
   }
