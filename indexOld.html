@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Go-Dutch App</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <div class="app-container">
+      <div class="go-dutch-app">
+        <div class="header">
+          <header class="main-title">
+            Go<span class="dash">-</span>Dutch app
+          </header>
+        </div>
+        <div class="app-dashboard">
+          <div class="add-data">
+            <div class="add-friend">
+              <button class="add-friend-btn add-new-btn">
+                Add new Friend
+              </button>
+            </div>
+            <div class="add-expense">
+              <button class="add-expense-btn add-new-btn">
+                Add new Expense
+              </button>
+            </div>
+          </div>
+
+          <div class="users-data"></div>
+        </div>
+        <div class="add-friend-modal modal-window">
+          <header class="modal-header add-friend-header">
+            Add new Friend
+          </header>
+          <form class="add-friend-form">
+            <div class="friend-name-input">
+              <label for="friend-name">Name:</label>
+              <input id="friend-name" type="text" required />
+            </div>
+            <button type="submit" class="friend-btn modal-btn">
+              Add Friend</button
+            ><br />
+            <button
+              type="button"
+              class="close-modal close-friend-modal modal-btn"
+            >
+              Cancel
+            </button>
+          </form>
+        </div>
+        <div class="add-expense-modal modal-window">
+          <form class="add-expense-form">
+            <header class="modal-header add-expense-header">
+              Add new Expense
+            </header>
+            <div class="expense-name-input input-div">
+              <label for="expense-name">Expense Name</label>
+              <input id="expense-name" type="text" required />
+            </div>
+            <div class="expense-amt-input input-div">
+              <label for="expense-amount">Amount</label>
+              <input id="expense-amount" type="number" required />
+            </div>
+            <div class="expense-partner-input input-div">
+              <label for="expense-partner">Select expense partner</label>
+              <select name="expense-partner" id="expense-partner" required>
+                <option value="choose">-Choose a friend-</option>
+              </select>
+            </div>
+            <div class="payer-input input-div">
+              <label for="payer">Paid by:</label>
+              <select name="payer" id="payer" required></select>
+            </div>
+
+            <button type="submit" class="expense-btn modal-btn">
+              Add Expense</button
+            ><br />
+            <button
+              type="button"
+              class="close-modal close-expense-modal modal-btn"
+            >
+              Cancel
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="src/index.js"></script>
+    Icons made by
+    <a
+      href="https://www.flaticon.com/authors/pixel-perfect"
+      title="Pixel perfect"
+      >Pixel perfect</a
+    >
+    from
+    <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+    <script src="src/index.js"></script>
+  </body>
+</html>

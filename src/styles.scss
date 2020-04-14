@@ -1,0 +1,238 @@
+@import url("https://fonts.googleapis.com/css?family=Odibee+Sans|Raleway&display=swap");
+
+$primary-color: #e6456d;
+$secondary-color: #08d9d6;
+$background-color:#252a34;
+$font-color: #eaeaea;
+
+@mixin flex-position($prop1, $prop2) {
+  display: flex;
+  justify-content: $prop1;
+  align-items: $prop2;
+}
+
+body {
+  font-family: sans-serif;
+  margin: 0px;
+  padding: 0px;
+}
+
+
+.App {
+  background-color: #ddd;
+}
+
+.outer-box {
+  width:100%;
+  @include flex-position(center, center);
+}
+
+.go-dutch-app {
+  width: 100%;
+  @include flex-position(center, center);
+  flex-direction: column;
+}
+
+.header {
+  width: 100%;
+}
+
+.main-title {
+  @include flex-position(center, center);
+  background-color: $background-color;
+  height: 3rem;
+  font-size: 1.4rem;
+  font-family: "Raleway", serif;
+  font-weight: bold;
+  color: $primary-color;
+}
+
+.app-dashboard {
+  min-width: 600px;
+  height: auto;
+  @include flex-position(center, space-around);
+  flex-direction: column;
+}
+
+.add-data {
+  @include flex-position(space-around, center);
+  width: 100%;
+}
+
+.add-new-btn {
+  height: 50px;
+  width: 180px;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+.add-expense-btn {
+  background-color: $primary-color;
+  color:$font-color;
+}
+
+.add-friend-btn {
+  background-color: $secondary-color;
+  color:$background-color;
+}
+
+.friend-btn {
+  margin-bottom:0px;
+}
+
+
+.users-data {
+  margin-top: 50px;
+}
+
+.user-data {
+  background-color:lighten($background-color, 30%);
+  color: lighten($font-color, 50%);
+  cursor: pointer;
+  border-bottom: 2px solid #fff;
+}
+
+.user-summary {
+  @include flex-position(space-between, center);
+  height: 45px;
+  padding: 0px 20px;
+}
+
+.user-name, .user-balance {
+  display: inline;
+}
+
+.user-balance-sheet {
+  display: none;
+  background-color: #eee;
+  color: #000;
+  width:100%;
+}
+
+.expense-item {
+  width: 100%;
+  @include flex-position(space-around, center);
+}
+
+.modify-expense {
+  @include flex-position(space-between, center);
+}
+
+
+.modal-window {
+  background-color: #eee;
+  z-index: 4;
+  margin: 0 auto;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 1.5rem;
+  outline:none;
+}
+
+.add-friend-modal {
+  width: 400px;
+  height: 230px;
+}
+
+.add-expense-modal {
+  width: 400px;
+  height: 330px;
+  display:none;
+}
+
+form {  
+  @include flex-position(center, center);
+  flex-direction: column;
+
+  .input-div {
+    width:100%;
+    margin:5px;
+    }
+    
+}
+
+.modal-header {
+  width: 100%;
+  height: 50px;
+  background-color: grey;
+  @include flex-position(center, center);
+  font-size: 22px;
+  font-family: "Raleway", serif;
+  font-weight: bold;
+  text-decoration: underline;
+  margin-bottom: 30px;
+}
+
+.add-friend-header, .friend-btn {
+  background-color: lighten($secondary-color, 5%);
+  color:$background-color;
+}
+
+.add-expense-header, .expense-btn {
+  background-color: lighten($primary-color, 5%);
+  color:$font-color;
+}
+
+.modal-btn {
+  height: 40px;
+  width: 150px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  margin:10px;
+}
+
+.friend-btn, .expense-btn {
+  margin-top: 15px;
+  margin-bottom: 0px;
+}
+
+.close-modal {
+  margin-top:0px;
+}
+
+.friend-btn:hover {
+  background-color: $secondary-color;
+}
+
+.expense-btn:hover {
+  background-color: $primary-color;
+}
+
+@media (max-width: 600px) {
+  .app-dashboard {
+    min-width: 100%; 
+  }
+  .modal-window {
+    width: 80%;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+ 
+  .app-dashboard {
+    min-width: 100%; 
+  }
+  .add-data {
+    flex-direction: column;
+  }
+
+  .add-expense-btn {
+    margin-top: 20px;
+  }
+
+  .modal-window {
+    width: 80%;
+  }
+
+  .add-expense-modal {
+    height: 365px;
+  }
+ 
+}
