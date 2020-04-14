@@ -21,13 +21,18 @@ function AddNewBtns({ toggleModal }) {
         </button>
       </div>
       <div className="add-expense">
-        <button className="add-expense-btn add-new-btn">Add new Expense</button>
+        <button
+          className="add-expense-btn add-new-btn"
+          onClick={() => toggleModal("expense")}
+        >
+          Add new Expense
+        </button>
       </div>
     </div>
   );
 }
 
-function AddNewFriendModal({isOpen, toggleModal}) {
+function AddNewFriendModal({ isOpen, toggleModal }) {
   return (
     <Modal
       isOpen={isOpen}
@@ -57,8 +62,13 @@ function AddNewFriendModal({isOpen, toggleModal}) {
   );
 }
 
-const AddNewExpenseModal = () => (
-  <div className="add-expense-modal modal-window">
+const AddNewExpenseModal = ({ isOpen, toggleModal }) => (
+  <Modal
+      isOpen={isOpen}
+      contentLabel="Add New Expense"
+      ariaHideApp={false}
+      className="add-expense-modal modal-window"
+    >
     <form className="add-expense-form">
       <header className="modal-header add-expense-header">
         Add new Expense
@@ -88,11 +98,12 @@ const AddNewExpenseModal = () => (
       <button
         type="button"
         className="close-modal close-expense-modal modal-btn"
+        onClick={() => toggleModal("expense")}
       >
         Cancel
       </button>
     </form>
-  </div>
+  </Modal>
 );
 
 function UsersData() {
@@ -107,8 +118,8 @@ export default class AppDashboard extends React.Component {
       expenseModal: false
     };
   }
-  toggleModal = name => {
-    name === "friend"
+  toggleModal = ClickedBtn => {
+    ClickedBtn === "friend"
       ? this.setState({ friendModal: !this.state.friendModal })
       : this.setState({ expenseModal: !this.state.expenseModal });
   };
@@ -121,8 +132,14 @@ export default class AppDashboard extends React.Component {
         <Header title="Go-Dutch App" />
         <AddNewBtns toggleModal={this.toggleModal} />
         <UsersData />
-        <AddNewFriendModal isOpen={this.state.friendModal} />
-        <AddNewExpenseModal />
+        <AddNewFriendModal
+          isOpen={this.state.friendModal}
+          toggleModal={this.toggleModal}
+        />
+        <AddNewExpenseModal
+          isOpen={this.state.expenseModal}
+          toggleModal={this.toggleModal}
+        />
       </div>
     );
   }
