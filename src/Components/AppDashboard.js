@@ -115,8 +115,15 @@ export default class AppDashboard extends React.Component {
     super(props);
     this.state = {
       friendModal: false,
-      expenseModal: false
-    };
+      expenseModal: false,
+      allUsers: [
+    {
+      userName: "You",
+      userId: "user-0",
+      userBalance: 0
+    }
+  ]
+    }
   }
   toggleModal = ClickedBtn => {
     ClickedBtn === "friend"
@@ -124,9 +131,6 @@ export default class AppDashboard extends React.Component {
       : this.setState({ expenseModal: !this.state.expenseModal });
   };
   render() {
-    const addFriendData = () => {
-      console.log("added Friend details");
-    };
     return (
       <div className="app-dashboard">
         <Header title="Go-Dutch App" />
