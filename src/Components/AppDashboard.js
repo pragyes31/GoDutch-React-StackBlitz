@@ -14,15 +14,6 @@ const formatInput = input => {
     return newInput.charAt(0).toUpperCase() + newInput.slice(1);
   };
 
-const loadUserToState = (friendName) => {
-  let user = {
-      userName: friendName,
-      userId: `user-${this.state.userCount}`,
-      userBalance: 0
-    };
-    let allUsers = [...this.state.allUsers, user]
-    this.setState({allUsers})
-}
 
 function AddNewBtns({ toggleModal }) {
   return (
@@ -141,19 +132,7 @@ export default class AppDashboard extends React.Component {
         }
       ]
     };
-    
   }
-
-loadUserToState = (friendName) => {
-  let user = {
-      userName: friendName,
-      userId: `user-${this.state.userCount}`,
-      userBalance: 0
-    };
-    let allUsers = [...this.state.allUsers, user]
-    this.setState({allUsers})
-}
-
   toggleModal = ClickedBtn => {
     ClickedBtn === "friend"
       ? this.setState({ friendModal: !this.state.friendModal })
@@ -162,18 +141,20 @@ loadUserToState = (friendName) => {
   addFriend = e => {
 let friendInput = document.querySelector("#friend-name");
 let friendName = formatInput(friendInput.value);
+//console.log(friendName)
 let user = {
       userName: friendName,
       userId: `user-${this.state.userCount}`,
       userBalance: 0
     };
+    console.log(user)
     let allUsers = [...this.state.allUsers, user]
+    console.log(allUsers)
     this.setState({allUsers})
-//loadUserToState(friendName);
-console.log(this.state.allUsers)
-// this.setState({ userCount: this.state.userCount+1, 
-// friendModal: !this.state.friendModal
-// })
+    //console.log(this.state.allUsers)
+this.setState({ userCount: this.state.userCount+1, 
+friendModal: !this.state.friendModal
+})
     e.preventDefault();
   };
 
