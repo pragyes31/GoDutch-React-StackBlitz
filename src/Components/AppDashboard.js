@@ -3,7 +3,7 @@ import Modal from "react-modal";
 
 function Header({title}) {
   return (
-    <div class="header">
+    <div className="header">
       <header className="main-title">{title}</header>
     </div>
   );
@@ -42,12 +42,12 @@ function AddFriendModal({ toggleModal, addFriend }) {
       className="add-friend-modal modal-window"
     >
       <header className="modal-header add-friend-header">Add new Friend</header>
-      <form className="add-friend-form" onSubmit={() => addFriend()}>
+      <form className="add-friend-form" onSubmit={(e) => addFriend(e)}>
         <div className="friend-name-input">
           <label htmlFor="friend-name">Name:</label>
           <input id="friend-name" type="text" required />
         </div>
-        <button type="button" className="friend-btn modal-btn">
+        <button type="submit" className="friend-btn modal-btn">
           Add Friend
         </button>
         <br />
@@ -133,7 +133,7 @@ export default class AppDashboard extends React.Component {
   };
   addFriend = e => {
     console.log("Friend added");
-    // this.setState({ friendModal: !this.state.friendModal })
+    this.setState({ friendModal: !this.state.friendModal })
     e.preventDefault();
   };
 
