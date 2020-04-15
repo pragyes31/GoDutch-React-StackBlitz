@@ -1,13 +1,14 @@
 import React from "react";
 import Modal from "react-modal";
 
-function Header(props) {
+function Header({title}) {
   return (
     <div class="header">
-      <header className="main-title">{props.title}</header>
+      <header className="main-title">{title}</header>
     </div>
   );
 }
+
 
 function AddNewBtns({ toggleModal }) {
   return (
@@ -35,18 +36,18 @@ function AddNewBtns({ toggleModal }) {
 function AddFriendModal({ toggleModal, addFriend }) {
   return (
     <Modal
-    isOpen={true}
+      isOpen={true}
       contentLabel="Add New Friend"
       ariaHideApp={false}
       className="add-friend-modal modal-window"
     >
       <header className="modal-header add-friend-header">Add new Friend</header>
-      <form className="add-friend-form" onSubmit={() => addFriend}>
+      <form className="add-friend-form" onSubmit={() => addFriend()}>
         <div className="friend-name-input">
-          <label for="friend-name">Name:</label>
+          <label htmlFor="friend-name">Name:</label>
           <input id="friend-name" type="text" required />
         </div>
-        <button type="submit" className="friend-btn modal-btn">
+        <button type="button" className="friend-btn modal-btn">
           Add Friend
         </button>
         <br />
@@ -62,33 +63,33 @@ function AddFriendModal({ toggleModal, addFriend }) {
   );
 }
 
-const AddNewExpenseModal = ({toggleModal }) => (
+const AddNewExpenseModal = ({ toggleModal }) => (
   <Modal
-      isOpen={true}
-      contentLabel="Add New Expense"
-      ariaHideApp={false}
-      className="add-expense-modal modal-window"
-    >
+    isOpen={true}
+    contentLabel="Add New Expense"
+    ariaHideApp={false}
+    className="add-expense-modal modal-window"
+  >
     <form className="add-expense-form">
       <header className="modal-header add-expense-header">
         Add new Expense
       </header>
       <div className="expense-name-input input-div">
-        <label for="expense-name">Expense Name</label>
+        <label htmlFor="expense-name">Expense Name</label>
         <input id="expense-name" type="text" required />
       </div>
       <div className="expense-amt-input input-div">
-        <label for="expense-amount">Amount</label>
+        <label htmlFor="expense-amount">Amount</label>
         <input id="expense-amount" type="number" required />
       </div>
       <div className="expense-partner-input input-div">
-        <label for="expense-partner">Select expense partner</label>
+        <label htmlFor="expense-partner">Select expense partner</label>
         <select name="expense-partner" id="expense-partner" required>
           <option value="choose">-Choose a friend-</option>
         </select>
       </div>
       <div className="payer-input input-div">
-        <label for="payer">Paid by:</label>
+        <label htmlFor="payer">Paid by:</label>
         <select name="payer" id="payer" required />
       </div>
       <button type="submit" className="expense-btn modal-btn">
@@ -117,24 +118,24 @@ export default class AppDashboard extends React.Component {
       friendModal: false,
       expenseModal: false,
       allUsers: [
-    {
-      userName: "You",
-      userId: "user-0",
-      userBalance: 0
-    }
-  ]
-    }
+        {
+          userName: "You",
+          userId: "user-0",
+          userBalance: 0
+        }
+      ]
+    };
   }
   toggleModal = ClickedBtn => {
     ClickedBtn === "friend"
       ? this.setState({ friendModal: !this.state.friendModal })
       : this.setState({ expenseModal: !this.state.expenseModal });
   };
-  addFriend = (e) => {
-e.preventDefault();
-console.log("Friend added");
-this.setState({ friendModal: !this.state.friendModal })
-  }
+  addFriend = e => {
+    console.log("Friend added");
+    // this.setState({ friendModal: !this.state.friendModal })
+    e.preventDefault();
+  };
 
   render() {
     return (
@@ -142,16 +143,15 @@ this.setState({ friendModal: !this.state.friendModal })
         <Header title="Go-Dutch App" />
         <AddNewBtns toggleModal={this.toggleModal} />
         <UsersData />
-        {this.state.friendModal && <AddFriendModal
-         toggleModal={this.toggleModal}
-         addFriend={this.addFriend}
-        /> }
-        {
-          this.state.expenseModal && <AddNewExpenseModal
-          toggleModal={this.toggleModal}
-        />
-        }
-        
+        {this.state.friendModal && (
+          <AddFriendModal
+            toggleModal={this.toggleModal}
+            addFriend={this.addFriend}
+          />
+        )}
+        {this.state.expenseModal && (
+          <AddNewExpenseModal toggleModal={this.toggleModal} />
+        )}
       </div>
     );
   }
