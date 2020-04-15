@@ -32,7 +32,7 @@ function AddNewBtns({ toggleModal }) {
   );
 }
 
-function AddNewFriendModal({ toggleModal }) {
+function AddFriendModal({ toggleModal, addFriend }) {
   return (
     <Modal
     isOpen={true}
@@ -41,7 +41,7 @@ function AddNewFriendModal({ toggleModal }) {
       className="add-friend-modal modal-window"
     >
       <header className="modal-header add-friend-header">Add new Friend</header>
-      <form className="add-friend-form">
+      <form className="add-friend-form" onSubmit={() => addFriend}>
         <div className="friend-name-input">
           <label for="friend-name">Name:</label>
           <input id="friend-name" type="text" required />
@@ -130,14 +130,21 @@ export default class AppDashboard extends React.Component {
       ? this.setState({ friendModal: !this.state.friendModal })
       : this.setState({ expenseModal: !this.state.expenseModal });
   };
+  addFriend = (e) => {
+e.preventDefault();
+console.log("Friend added");
+this.setState({ friendModal: !this.state.friendModal })
+  }
+
   render() {
     return (
       <div className="app-dashboard">
         <Header title="Go-Dutch App" />
         <AddNewBtns toggleModal={this.toggleModal} />
         <UsersData />
-        {this.state.friendModal && <AddNewFriendModal
+        {this.state.friendModal && <AddFriendModal
          toggleModal={this.toggleModal}
+         addFriend={this.addFriend}
         /> }
         {
           this.state.expenseModal && <AddNewExpenseModal
