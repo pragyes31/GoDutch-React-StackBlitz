@@ -38,19 +38,30 @@ function AddNewBtns({ toggleModal }) {
   );
 }
 
-function AddFriendModal({ toggleModal, addFriend }) {
-  return (
-    <Modal
+
+class AddFriendModal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      input:""
+    };
+  }
+  handleChange = () => {
+    
+  }
+  render() {
+    return (
+      <Modal
       isOpen={true}
       contentLabel="Add New Friend"
       ariaHideApp={false}
       className="add-friend-modal modal-window"
     >
       <header className="modal-header add-friend-header">Add new Friend</header>
-      <form className="add-friend-form" onSubmit={(e) => addFriend(e)}>
+      <form className="add-friend-form" onSubmit={(e) => this.props.addFriend(e)}>
         <div className="friend-name-input">
           <label htmlFor="friend-name">Name:</label>
-          <input id="friend-name" type="text" required />
+          <input id="friend-name" type="text" value={this.state.input} onChange={this.handleChange} required />
         </div>
         <button type="submit" className="friend-btn modal-btn">
           Add Friend
@@ -59,14 +70,46 @@ function AddFriendModal({ toggleModal, addFriend }) {
         <button
           type="button"
           className="close-modal close-friend-modal modal-btn"
-          onClick={() => toggleModal("friend")}
+          onClick={() => this.props.toggleModal("friend")}
         >
           Cancel
         </button>
       </form>
     </Modal>
-  );
+    )
+  }
 }
+
+
+// function AddFriendModal({ toggleModal, addFriend }) {
+//   return (
+//     <Modal
+//       isOpen={true}
+//       contentLabel="Add New Friend"
+//       ariaHideApp={false}
+//       className="add-friend-modal modal-window"
+//     >
+//       <header className="modal-header add-friend-header">Add new Friend</header>
+//       <form className="add-friend-form" onSubmit={(e) => addFriend(e)}>
+//         <div className="friend-name-input">
+//           <label htmlFor="friend-name">Name:</label>
+//           <input id="friend-name" type="text" required />
+//         </div>
+//         <button type="submit" className="friend-btn modal-btn">
+//           Add Friend
+//         </button>
+//         <br />
+//         <button
+//           type="button"
+//           className="close-modal close-friend-modal modal-btn"
+//           onClick={() => toggleModal("friend")}
+//         >
+//           Cancel
+//         </button>
+//       </form>
+//     </Modal>
+//   );
+// }
 
 const AddNewExpenseModal = ({ toggleModal }) => (
   <Modal
@@ -134,28 +177,27 @@ export default class AppDashboard extends React.Component {
     };
   }
   toggleModal = ClickedBtn => {
+    
     ClickedBtn === "friend"
       ? this.setState({ friendModal: !this.state.friendModal })
       : this.setState({ expenseModal: !this.state.expenseModal });
   };
+
   addFriend = e => {
+    e.preventDefault();
 let friendInput = document.querySelector("#friend-name");
 let friendName = formatInput(friendInput.value);
-//console.log(friendName)
 let user = {
       userName: friendName,
       userId: `user-${this.state.userCount}`,
       userBalance: 0
     };
-    console.log(user)
     let allUsers = [...this.state.allUsers, user]
     console.log(allUsers)
     this.setState({allUsers})
-    //console.log(this.state.allUsers)
 this.setState({ userCount: this.state.userCount+1, 
 friendModal: !this.state.friendModal
 })
-    e.preventDefault();
   };
 
   render() {
