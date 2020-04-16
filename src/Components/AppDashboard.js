@@ -43,11 +43,11 @@ class AddFriendModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      input:""
+      friendName:""
     };
   }
-  handleChange = () => {
-    
+  handleChange = (e) => {
+    this.setState({friendName: e.target.value});
   }
   render() {
     return (
@@ -58,10 +58,10 @@ class AddFriendModal extends React.Component {
       className="add-friend-modal modal-window"
     >
       <header className="modal-header add-friend-header">Add new Friend</header>
-      <form className="add-friend-form" onSubmit={(e) => this.props.addFriend(e)}>
+      <form className="add-friend-form" onSubmit={(e) => this.props.addFriend(e, this.state.friendName)}>
         <div className="friend-name-input">
           <label htmlFor="friend-name">Name:</label>
-          <input id="friend-name" type="text" value={this.state.input} onChange={this.handleChange} required />
+          <input id="friend-name" type="text" value={this.state.friendName} onChange={this.handleChange} required />
         </div>
         <button type="submit" className="friend-btn modal-btn">
           Add Friend
@@ -183,7 +183,7 @@ export default class AppDashboard extends React.Component {
       : this.setState({ expenseModal: !this.state.expenseModal });
   };
 
-  addFriend = e => {
+  addFriend = (e, friendName) => {
     e.preventDefault();
 let friendInput = document.querySelector("#friend-name");
 let friendName = formatInput(friendInput.value);
@@ -193,8 +193,9 @@ let user = {
       userBalance: 0
     };
     let allUsers = [...this.state.allUsers, user]
-    console.log(allUsers)
+    
     this.setState({allUsers})
+    console.log(this.state.allUsers)
 this.setState({ userCount: this.state.userCount+1, 
 friendModal: !this.state.friendModal
 })
