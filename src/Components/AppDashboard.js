@@ -193,9 +193,8 @@ let user = {
       userBalance: 0
     };
     let allUsers = [...this.state.allUsers, user]
-    
     this.setState({allUsers})
-    console.log(this.state.allUsers)
+    console.log(this.state)
 this.setState({ userCount: this.state.userCount+1, 
 friendModal: !this.state.friendModal
 })
