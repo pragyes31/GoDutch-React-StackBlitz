@@ -81,36 +81,6 @@ class AddFriendModal extends React.Component {
 }
 
 
-// function AddFriendModal({ toggleModal, addFriend }) {
-//   return (
-//     <Modal
-//       isOpen={true}
-//       contentLabel="Add New Friend"
-//       ariaHideApp={false}
-//       className="add-friend-modal modal-window"
-//     >
-//       <header className="modal-header add-friend-header">Add new Friend</header>
-//       <form className="add-friend-form" onSubmit={(e) => addFriend(e)}>
-//         <div className="friend-name-input">
-//           <label htmlFor="friend-name">Name:</label>
-//           <input id="friend-name" type="text" required />
-//         </div>
-//         <button type="submit" className="friend-btn modal-btn">
-//           Add Friend
-//         </button>
-//         <br />
-//         <button
-//           type="button"
-//           className="close-modal close-friend-modal modal-btn"
-//           onClick={() => toggleModal("friend")}
-//         >
-//           Cancel
-//         </button>
-//       </form>
-//     </Modal>
-//   );
-// }
-
 const AddNewExpenseModal = ({ toggleModal }) => (
   <Modal
     isOpen={true}
@@ -165,7 +135,6 @@ export default class AppDashboard extends React.Component {
     this.state = {
       friendModal: false,
       expenseModal: false,
-      userCount:1,
       expenseCount:1,
       allUsers: [
         {
@@ -183,19 +152,37 @@ export default class AppDashboard extends React.Component {
       : this.setState({ expenseModal: !this.state.expenseModal });
   };
 
-  addFriend = (e, friendName) => {
-    e.preventDefault();
-let friendInput = document.querySelector("#friend-name");
-let friendName = formatInput(friendInput.value);
+  loadUserToState = (friendName) => {
 let user = {
       userName: friendName,
-      userId: `user-${this.state.userCount}`,
+      userId: `user-${this.state.allUsers.length}`,
       userBalance: 0
     };
     let allUsers = [...this.state.allUsers, user]
     this.setState({allUsers})
-    console.log(this.state)
-this.setState({ userCount: this.state.userCount+1, 
+  }
+
+  populateUserDetails = friendName => {
+    const userDataMarkup = `
+  <div class="user-${userCount}-data user-data">
+  <div class="user-summary">
+    <div class="user-details">
+      <div class="user-${userCount} user-name">${friendName}</div>
+      <div class="user-${userCount}-balance user-balance"></div>
+    </div>
+    </div>
+  <div class="user-${userCount}-expenses-list user-balance-sheet"></div>
+</div>`
+  }
+  
+
+  addFriend = (e, friendName) => {
+    e.preventDefault();
+let friendInput = document.querySelector("#friend-name");
+let friendName = formatInput(friendInput.value);
+this.loadUserToState(friendName)
+setTimeout(() => console.log(this.state.allUsers), 0)
+this.setState({ userCount: this.state.userCount+1,
 friendModal: !this.state.friendModal
 })
   };
