@@ -93,11 +93,10 @@ class AddFriendModal extends React.Component {
 class AddExpenseModal extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      friendName: ""
-    };
   }
+  
   render() {
+    let payerToUI = this.props.allUsers.slice(1);
     return <Modal
     isOpen={true}
     contentLabel="Add New Expense"
@@ -120,6 +119,9 @@ class AddExpenseModal extends React.Component {
         <label htmlFor="expense-partner">Select expense partner</label>
         <select name="expense-partner" id="expense-partner" required>
           <option value="choose">-Choose a friend-</option>
+          {payerToUI.map(({userName}) => {
+            return <option value={`${userName}`}>{userName}</option>
+          })}
         </select>
       </div>
       <div className="payer-input input-div">
@@ -197,32 +199,12 @@ export default class AppDashboard extends React.Component {
     this.setState({ allUsers });
   };
 
-  populateUserDetails = friendName => {
-    const userDataMarkup = `
-  <div class="user-${userCount}-data user-data">
-  <div class="user-summary">
-    <div class="user-details">
-      <div class="user-${userCount} user-name">${friendName}</div>
-      <div class="user-${userCount}-balance user-balance"></div>
-    </div>
-    </div>
-  <div class="user-${userCount}-expenses-list user-balance-sheet"></div>
-</div>`;
-    usersData.innerHTML += userDataMarkup;
-    expensePartner.innerHTML += `<option value="${friendName}">${friendName}</option>`;
-    $("#friend-name").value = "";
-  };
-
   addFriend = (e, friendName) => {
     e.preventDefault();
     let friendInput = document.querySelector("#friend-name");
     let friendName = formatInput(friendInput.value);
     this.loadUserToState(friendName);
-    setTimeout(() => console.log(this.state.allUsers), 0);
-    this.setState({
-      userCount: this.state.userCount + 1,
-      friendModal: !this.state.friendModal
-    });
+    this.setState({friendModal: !this.state.friendModal });
   };
 
   render() {
@@ -238,7 +220,9 @@ export default class AppDashboard extends React.Component {
           />
         )}
         {this.state.expenseModal && (
-          <AddExpenseModal toggleModal={this.toggleModal} />
+          <AddExpenseModal toggleModal={this.toggleModal}
+          allUsers={this.state.allUsers}
+           />
         )}
       </div>
     );
