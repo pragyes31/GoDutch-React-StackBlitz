@@ -90,8 +90,15 @@ class AddFriendModal extends React.Component {
   }
 }
 
-const AddNewExpenseModal = ({ toggleModal }) => (
-  <Modal
+class AddExpenseModal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      friendName: ""
+    };
+  }
+  render() {
+    return <Modal
     isOpen={true}
     contentLabel="Add New Expense"
     ariaHideApp={false}
@@ -126,13 +133,14 @@ const AddNewExpenseModal = ({ toggleModal }) => (
       <button
         type="button"
         className="close-modal close-expense-modal modal-btn"
-        onClick={() => toggleModal("expense")}
+        onClick={() => this.props.toggleModal("expense")}
       >
         Cancel
       </button>
     </form>
   </Modal>
-);
+  }
+}
 
 function UsersData({ allUsers }) {
   let usersToUI = allUsers.slice(1);
@@ -144,7 +152,9 @@ function UsersData({ allUsers }) {
             <div className="user-summary">
               <div className="user-details">
                 <div className={`${userId} user-name`}>{userName}</div>
-                <div className={`${userId}-balance user-balance`}>{!!userBalance && userBalance}</div>
+                <div className={`${userId}-balance user-balance`}>
+                  {!!userBalance && userBalance}
+                </div>
               </div>
             </div>
             <div className={`${userId}-expenses-list user-balance-sheet`} />
@@ -228,7 +238,7 @@ export default class AppDashboard extends React.Component {
           />
         )}
         {this.state.expenseModal && (
-          <AddNewExpenseModal toggleModal={this.toggleModal} />
+          <AddExpenseModal toggleModal={this.toggleModal} />
         )}
       </div>
     );
