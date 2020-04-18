@@ -37,7 +37,6 @@ function AddNewBtns({ toggleModal }) {
   );
 }
 
-
 class AddFriendModal extends React.Component {
   constructor(props) {
     super(props);
@@ -46,9 +45,9 @@ class AddFriendModal extends React.Component {
     };
   }
 
-  handleChange = (e) => {
+  handleChange = e => {
     this.setState({ friendName: e.target.value });
-  }
+  };
   render() {
     return (
       <Modal
@@ -57,15 +56,26 @@ class AddFriendModal extends React.Component {
         ariaHideApp={false}
         className="add-friend-modal modal-window"
       >
-        <header className="modal-header add-friend-header">Add new Friend</header>
-        <form className="add-friend-form" onSubmit={(e) => this.props.addFriend(e, this.state.friendName)}>
+        <header className="modal-header add-friend-header">
+          Add new Friend
+        </header>
+        <form
+          className="add-friend-form"
+          onSubmit={e => this.props.addFriend(e, this.state.friendName)}
+        >
           <div className="friend-name-input">
             <label htmlFor="friend-name">Name:</label>
-            <input id="friend-name" type="text" value={this.state.friendName} onChange={this.handleChange} required />
+            <input
+              id="friend-name"
+              type="text"
+              value={this.state.friendName}
+              onChange={this.handleChange}
+              required
+            />
           </div>
           <button type="submit" className="friend-btn modal-btn">
             Add Friend
-        </button>
+          </button>
           <br />
           <button
             type="button"
@@ -73,13 +83,12 @@ class AddFriendModal extends React.Component {
             onClick={() => this.props.toggleModal("friend")}
           >
             Cancel
-        </button>
+          </button>
         </form>
       </Modal>
-    )
+    );
   }
 }
-
 
 const AddNewExpenseModal = ({ toggleModal }) => (
   <Modal
@@ -128,31 +137,22 @@ const AddNewExpenseModal = ({ toggleModal }) => (
 function UsersData({ allUsers }) {
   let usersToUI = allUsers.slice(1);
   return (
-    <div className="users-data" >
-
-      {/* <div className={`${userId}-data user-data`}>
-  <div className="user-summary">
-    <div className="user-details">
-      <div className={`${userId} user-name`}>userName</div>
-      <div className={`${userId}-balance user-balance`}></div>
+    <div className="users-data">
+      {usersToUI.map(({ userName, userId, userBalance }) => {
+        return (
+          <div className={`${userId}-data user-data`}>
+            <div className="user-summary">
+              <div className="user-details">
+                <div className={`${userId} user-name`}>{userName}</div>
+                <div className={`${userId}-balance user-balance`}>{!!userBalance && userBalance}</div>
+              </div>
+            </div>
+            <div className={`${userId}-expenses-list user-balance-sheet`} />
+          </div>
+        );
+      })}
     </div>
-    </div>
-  <div className={`${userId}-expenses-list user-balance-sheet`}></div>
-</div> */}
-
-      { usersToUI.map(({ userName, userId, userBalance }) => {
-        return <div className={`${userId}-data user-data`}>
-  <div className="user-summary">
-    <div className="user-details">
-      <div className={`${userId} user-name`}>{userName}</div>
-      <div className={`${userId}-balance user-balance`}></div>
-    </div>
-    </div>
-  <div className={`${userId}-expenses-list user-balance-sheet`}></div>
-</div>
-})}
-    </div >
-    )
+  );
 }
 
 export default class AppDashboard extends React.Component {
@@ -172,21 +172,20 @@ export default class AppDashboard extends React.Component {
     };
   }
   toggleModal = ClickedBtn => {
-
     ClickedBtn === "friend"
       ? this.setState({ friendModal: !this.state.friendModal })
       : this.setState({ expenseModal: !this.state.expenseModal });
   };
 
-  loadUserToState = (friendName) => {
+  loadUserToState = friendName => {
     let user = {
       userName: friendName,
       userId: `user-${this.state.allUsers.length}`,
       userBalance: 0
     };
-    let allUsers = [...this.state.allUsers, user]
-    this.setState({ allUsers })
-  }
+    let allUsers = [...this.state.allUsers, user];
+    this.setState({ allUsers });
+  };
 
   populateUserDetails = friendName => {
     const userDataMarkup = `
@@ -198,23 +197,22 @@ export default class AppDashboard extends React.Component {
     </div>
     </div>
   <div class="user-${userCount}-expenses-list user-balance-sheet"></div>
-</div>`
+</div>`;
     usersData.innerHTML += userDataMarkup;
     expensePartner.innerHTML += `<option value="${friendName}">${friendName}</option>`;
     $("#friend-name").value = "";
-  }
-
+  };
 
   addFriend = (e, friendName) => {
     e.preventDefault();
     let friendInput = document.querySelector("#friend-name");
     let friendName = formatInput(friendInput.value);
-    this.loadUserToState(friendName)
-    setTimeout(() => console.log(this.state.allUsers), 0)
+    this.loadUserToState(friendName);
+    setTimeout(() => console.log(this.state.allUsers), 0);
     this.setState({
       userCount: this.state.userCount + 1,
       friendModal: !this.state.friendModal
-    })
+    });
   };
 
   render() {
