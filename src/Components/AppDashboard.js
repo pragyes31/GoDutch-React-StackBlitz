@@ -274,7 +274,7 @@ export default class AppDashboard extends React.Component {
   addExpense = (e, expenseObj) => {
     e.preventDefault();
     this.setState({ 
-      allExpenses: [...this.state.allExpenses, expenseObj], 
+      allExpenses: [...this.state.allExpenses, expenseObj],
       expenseModal: !this.state.expenseModal 
       })
   setTimeout(() => console.log(this.state.allExpenses), 100)
