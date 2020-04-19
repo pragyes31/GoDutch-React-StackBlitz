@@ -94,28 +94,27 @@ class AddExpenseModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      expenseName:"",
-      expenseAmount:"",
+      expenseName: "",
+      expenseAmount: "",
       selectedPartner: "",
-      selectedPayer: "You"
+      payer: "You"
     };
   }
   handleChange = e => {
-    switch(e.target.name) {
+    switch (e.target.name) {
       case "expenseName":
-      this.setState({ expenseName: e.target.value });
-      break;
+        this.setState({ expenseName: e.target.value });
+        break;
       case "expenseAmount":
-      this.setState({ expenseAmount: e.target.value });
-      break;
+        this.setState({ expenseAmount: e.target.value });
+        break;
       case "expense-partner":
-      this.setState({ selectedPartner: e.target.value });
-      break;
+        this.setState({ selectedPartner: e.target.value });
+        break;
       case "payer":
-      this.setState({ selectedPayer: e.target.value });
-      break;
+        this.setState({ payer: e.target.value });
+        break;
     }
-    this.setState({ selectedPartner: e.target.value });
   };
   render() {
     let payerToUI = this.props.allUsers.slice(1);
@@ -126,17 +125,40 @@ class AddExpenseModal extends React.Component {
         ariaHideApp={false}
         className="add-expense-modal modal-window"
       >
-        <form className="add-expense-form">
+        <form
+          onSubmit={(e) =>
+            this.props.addExpense(
+              e,
+              this.state.expenseName,
+              this.state.expenseAmount,
+              this.state.selectedPartner,
+              this.state.payer
+            )
+          }
+          className="add-expense-form"
+        >
           <header className="modal-header add-expense-header">
             Add new Expense
           </header>
           <div className="expense-name-input input-div">
             <label htmlFor="expense-name">Expense Name</label>
-            <input id="expense-name" name="expenseName" type="text" onChange={this.handleChange} required />
+            <input
+              id="expense-name"
+              name="expenseName"
+              type="text"
+              onChange={this.handleChange}
+              required
+            />
           </div>
           <div className="expense-amt-input input-div">
             <label htmlFor="expense-amount">Amount</label>
-            <input id="expense-amount" name="expenseAmount" type="number" onChange={this.handleChange} required />
+            <input
+              id="expense-amount"
+              name="expenseAmount"
+              type="number"
+              onChange={this.handleChange}
+              required
+            />
           </div>
           <div className="expense-partner-input input-div">
             <label htmlFor="expense-partner">Select expense partner</label>
@@ -149,7 +171,15 @@ class AddExpenseModal extends React.Component {
             >
               <option name="expense-partner" value="choose">-Choose a friend-</option>
               {payerToUI.map(({ userName }) => {
-                return <option  name="expense-partner" key={userName} value={userName}>{userName}</option>;
+                return (
+                  <option
+                    name="expense-partner"
+                    key={userName}
+                    value={userName}
+                  >
+                    {userName}
+                  </option>
+                );
               })}
             </select>
           </div>
@@ -157,7 +187,12 @@ class AddExpenseModal extends React.Component {
           {!!this.state.selectedPartner && (
             <div className="payer-input input-div">
               <label htmlFor="payer">Paid by:</label>
-              <select name="payer" id="payer" onChange={this.handleChange} required>
+              <select
+                name="payer"
+                id="payer"
+                onChange={this.handleChange}
+                required
+              >
                 <option name="payer" value="">--</option>
                 <option name="payer" value="You">You</option>
                 <option name="payer" value={this.state.selectedPartner}>
@@ -239,6 +274,11 @@ export default class AppDashboard extends React.Component {
     this.setState({ allUsers });
   };
 
+  addExpense = (e, expenseName, amount, partner, payer) => {
+    e.preventDefault();
+    this.setState({ expenseModal: !this.state.expenseModal });
+  };
+
   addFriend = (e, friendName) => {
     e.preventDefault();
     let friendInput = document.querySelector("#friend-name");
@@ -263,7 +303,7 @@ export default class AppDashboard extends React.Component {
           <AddExpenseModal
             toggleModal={this.toggleModal}
             allUsers={this.state.allUsers}
-
+            addExpense={this.addExpense}
           />
         )}
       </div>
