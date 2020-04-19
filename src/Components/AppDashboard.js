@@ -129,10 +129,7 @@ class AddExpenseModal extends React.Component {
           onSubmit={(e) =>
             this.props.addExpense(
               e,
-              this.state.expenseName,
-              this.state.expenseAmount,
-              this.state.selectedPartner,
-              this.state.payer
+              this.state
             )
           }
           className="add-expense-form"
@@ -274,9 +271,13 @@ export default class AppDashboard extends React.Component {
     this.setState({ allUsers });
   };
 
-  addExpense = (e, expenseName, amount, partner, payer) => {
+  addExpense = (e, expenseObj) => {
     e.preventDefault();
-    this.setState({ expenseModal: !this.state.expenseModal });
+    this.setState({ 
+      allExpenses: [...this.state.allExpenses, expenseObj], 
+      expenseModal: !this.state.expenseModal 
+      })
+  setTimeout(() => console.log(this.state.allExpenses), 100)
   };
 
   addFriend = (e, friendName) => {
