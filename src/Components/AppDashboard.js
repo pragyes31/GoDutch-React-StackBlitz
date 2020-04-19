@@ -93,68 +93,94 @@ class AddFriendModal extends React.Component {
 class AddExpenseModal extends React.Component {
   constructor(props) {
     super(props);
-  this.state = {
-    selectedPartner:'',
-    selectedPayer:'You'
+    this.state = {
+      expenseName:"",
+      expenseAmount:"",
+      selectedPartner: "",
+      selectedPayer: "You"
+    };
   }
-  }
-  handleChange = (e) => {
-this.setState({selectedPartner:e.target.value})
-  }
+  handleChange = e => {
+    // switch(e.target.name) {
+    //   case expenseName:
+    //   this.setState({ expenseName: e.target.value });
+    //   break;
+    //   case expenseAmount:
+    //   this.setState({ expenseAmount: e.target.value });
+    //   break;
+    //   case expense-partner:
+    //   this.setState({ selectedPartner: e.target.value });
+    //   break;
+    //   case payer:
+    //   this.setState({ selectedPayer: e.target.value });
+    //   break;
+    // }
+    console.log(e.target.name)
+    this.setState({ selectedPartner: e.target.value });
+  };
   render() {
     let payerToUI = this.props.allUsers.slice(1);
-    return <Modal
-    isOpen={true}
-    contentLabel="Add New Expense"
-    ariaHideApp={false}
-    className="add-expense-modal modal-window"
-  >
-    <form className="add-expense-form">
-      <header className="modal-header add-expense-header">
-        Add new Expense
-      </header>
-      <div className="expense-name-input input-div">
-        <label htmlFor="expense-name">Expense Name</label>
-        <input id="expense-name" type="text" required />
-      </div>
-      <div className="expense-amt-input input-div">
-        <label htmlFor="expense-amount">Amount</label>
-        <input id="expense-amount" type="number" required />
-      </div>
-      <div className="expense-partner-input input-div">
-        <label htmlFor="expense-partner">Select expense partner</label>
-        <select name="expense-partner" id="expense-partner" value={this.state.selectedPartner} onChange={this.handleChange} required>
-          <option value="choose">-Choose a friend-</option>
-          {payerToUI.map(({userName}) => {
-            return <option value={`${userName}`}>{userName}</option>
-          })}
-        </select>
-      </div>
-     
-        { !!this.state.selectedPartner && 
-        <div className="payer-input input-div">
-        <label htmlFor="payer">Paid by:</label>
-        <select name="payer" id="payer" required >
-  <option value="">--</option>
-    <option value="You">You</option>
-    <option value={this.state.selectedPartner}>{this.state.selectedPartner}</option>
-    </select>
-        </div>
-         
-        }
-      <button type="submit" className="expense-btn modal-btn">
-        Add Expense
-      </button>
-      <br />
-      <button
-        type="button"
-        className="close-modal close-expense-modal modal-btn"
-        onClick={() => this.props.toggleModal("expense")}
+    return (
+      <Modal
+        isOpen={true}
+        contentLabel="Add New Expense"
+        ariaHideApp={false}
+        className="add-expense-modal modal-window"
       >
-        Cancel
-      </button>
-    </form>
-  </Modal>
+        <form className="add-expense-form">
+          <header className="modal-header add-expense-header">
+            Add new Expense
+          </header>
+          <div className="expense-name-input input-div">
+            <label htmlFor="expense-name">Expense Name</label>
+            <input id="expense-name" name="expenseName" type="text" onChange={this.handleChange} required />
+          </div>
+          <div className="expense-amt-input input-div">
+            <label htmlFor="expense-amount">Amount</label>
+            <input id="expense-amount" name="expenseAmount" type="number" onChange={this.handleChange} required />
+          </div>
+          <div className="expense-partner-input input-div">
+            <label htmlFor="expense-partner">Select expense partner</label>
+            <select
+              name="expense-partner"
+              id="expense-partner"
+              value={this.state.selectedPartner}
+              onChange={this.handleChange}
+              required
+            >
+              <option name="expense-partner" value="choose">-Choose a friend-</option>
+              {payerToUI.map(({ userName }) => {
+                return <option  name="expense-partner" key={userName} value={userName}>{userName}</option>;
+              })}
+            </select>
+          </div>
+
+          {!!this.state.selectedPartner && (
+            <div className="payer-input input-div">
+              <label htmlFor="payer">Paid by:</label>
+              <select name="payer" id="payer" onChange={this.handleChange} required>
+                <option name="payer" value="">--</option>
+                <option name="payer" value="You">You</option>
+                <option name="payer" value={this.state.selectedPartner}>
+                  {this.state.selectedPartner}
+                </option>
+              </select>
+            </div>
+          )}
+          <button type="submit" className="expense-btn modal-btn">
+            Add Expense
+          </button>
+          <br />
+          <button
+            type="button"
+            className="close-modal close-expense-modal modal-btn"
+            onClick={() => this.props.toggleModal("expense")}
+          >
+            Cancel
+          </button>
+        </form>
+      </Modal>
+    );
   }
 }
 
@@ -164,7 +190,7 @@ function UsersData({ allUsers }) {
     <div className="users-data">
       {usersToUI.map(({ userName, userId, userBalance }) => {
         return (
-          <div className={`${userId}-data user-data`}>
+          <div key={`${userId}-data`} className={`${userId}-data user-data`}>
             <div className="user-summary">
               <div className="user-details">
                 <div className={`${userId} user-name`}>{userName}</div>
@@ -194,7 +220,8 @@ export default class AppDashboard extends React.Component {
           userId: "user-0",
           userBalance: 0
         }
-      ]
+      ],
+      allExpenses: []
     };
   }
   toggleModal = ClickedBtn => {
@@ -218,7 +245,7 @@ export default class AppDashboard extends React.Component {
     let friendInput = document.querySelector("#friend-name");
     let friendName = formatInput(friendInput.value);
     this.loadUserToState(friendName);
-    this.setState({friendModal: !this.state.friendModal });
+    this.setState({ friendModal: !this.state.friendModal });
   };
 
   render() {
@@ -234,9 +261,11 @@ export default class AppDashboard extends React.Component {
           />
         )}
         {this.state.expenseModal && (
-          <AddExpenseModal toggleModal={this.toggleModal}
-          allUsers={this.state.allUsers}
-           />
+          <AddExpenseModal
+            toggleModal={this.toggleModal}
+            allUsers={this.state.allUsers}
+
+          />
         )}
       </div>
     );
