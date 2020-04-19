@@ -101,21 +101,20 @@ class AddExpenseModal extends React.Component {
     };
   }
   handleChange = e => {
-    // switch(e.target.name) {
-    //   case expenseName:
-    //   this.setState({ expenseName: e.target.value });
-    //   break;
-    //   case expenseAmount:
-    //   this.setState({ expenseAmount: e.target.value });
-    //   break;
-    //   case expense-partner:
-    //   this.setState({ selectedPartner: e.target.value });
-    //   break;
-    //   case payer:
-    //   this.setState({ selectedPayer: e.target.value });
-    //   break;
-    // }
-    console.log(e.target.name)
+    switch(e.target.name) {
+      case "expenseName":
+      this.setState({ expenseName: e.target.value });
+      break;
+      case "expenseAmount":
+      this.setState({ expenseAmount: e.target.value });
+      break;
+      case "expense-partner":
+      this.setState({ selectedPartner: e.target.value });
+      break;
+      case "payer":
+      this.setState({ selectedPayer: e.target.value });
+      break;
+    }
     this.setState({ selectedPartner: e.target.value });
   };
   render() {
