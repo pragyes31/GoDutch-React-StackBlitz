@@ -1,4 +1,4 @@
-//import "./styles.scss";
+import "./styles.scss";
 import $ from "jquery";
 
 const createGoDutchApp = function() {
@@ -56,7 +56,7 @@ const createGoDutchApp = function() {
 
     usersData.innerHTML += userDataMarkup;
     expensePartner.innerHTML += `<option value="${friendName}">${friendName}</option>`;
-    $("#friend-name").value = "";
+    friendInput.value = "";
   };
 
   const toggleExpenseList = e => {
@@ -78,8 +78,8 @@ const createGoDutchApp = function() {
     allUsers = [...allUsers, user];
   };
 
-  const addNewFriend = e => {
-    let friendName = formatInput($("#friend-name").value);
+  const addNewFriend = (e, friend) => {
+    let friendName = formatInput(friend.value);
     loadUserToSheet(friendName);
     populateUserDetails(friendName);
     closeModal(e);
@@ -180,7 +180,7 @@ const createGoDutchApp = function() {
   $(".close-modal").on("click", closeModal);
   $(".add-friend-form").on("submit", e => {
     e.preventDefault();
-    addNewFriend(e);
+    addNewFriend(e, friendInput);
   });
   $(".add-expense-form").on("submit", e => {
     e.preventDefault();
