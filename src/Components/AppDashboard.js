@@ -93,8 +93,14 @@ class AddFriendModal extends React.Component {
 class AddExpenseModal extends React.Component {
   constructor(props) {
     super(props);
+  this.state = {
+    selectedPartner:'',
+    selectedPayer:'You'
   }
-  
+  }
+  handleChange = (e) => {
+this.setState({selectedPartner:e.target.value})
+  }
   render() {
     let payerToUI = this.props.allUsers.slice(1);
     return <Modal
@@ -117,17 +123,25 @@ class AddExpenseModal extends React.Component {
       </div>
       <div className="expense-partner-input input-div">
         <label htmlFor="expense-partner">Select expense partner</label>
-        <select name="expense-partner" id="expense-partner" required>
+        <select name="expense-partner" id="expense-partner" value={this.state.selectedPartner} onChange={this.handleChange} required>
           <option value="choose">-Choose a friend-</option>
           {payerToUI.map(({userName}) => {
             return <option value={`${userName}`}>{userName}</option>
           })}
         </select>
       </div>
-      <div className="payer-input input-div">
+     
+        { !!this.state.selectedPartner && 
+        <div className="payer-input input-div">
         <label htmlFor="payer">Paid by:</label>
-        <select name="payer" id="payer" required />
-      </div>
+        <select name="payer" id="payer" required >
+  <option value="">--</option>
+    <option value="You">You</option>
+    <option value={this.state.selectedPartner}>{this.state.selectedPartner}</option>
+    </select>
+        </div>
+         
+        }
       <button type="submit" className="expense-btn modal-btn">
         Add Expense
       </button>
