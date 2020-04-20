@@ -252,7 +252,8 @@ export default class AppDashboard extends React.Component {
           userBalance: 0
         }
       ],
-      allExpenses: []
+      allExpenses: [],
+      currentExpense:{}
     };
   }
   toggleModal = ClickedBtn => {
@@ -271,13 +272,13 @@ export default class AppDashboard extends React.Component {
     this.setState({ allUsers });
   };
 
-  addExpense = (e, expenseObj) => {
+  addExpense = (e, currentExpense) => {
     e.preventDefault();
     this.setState({ 
-      allExpenses: [...this.state.allExpenses, expenseObj],
+      allExpenses: [...this.state.allExpenses, currentExpense],
+      currentExpense,
       expenseModal: !this.state.expenseModal 
       })
-  setTimeout(() => console.log(this.state.allExpenses), 100)
   };
 
   addFriend = (e, friendName) => {
@@ -293,7 +294,7 @@ export default class AppDashboard extends React.Component {
       <div className="app-dashboard">
         <Header title="Go-Dutch App" />
         <AddNewBtns toggleModal={this.toggleModal} />
-        <UsersData allUsers={this.state.allUsers} />
+        <UsersData allUsers={this.state.allUsers} currentExpense={this.state.currentExpense} />
         {this.state.friendModal && (
           <AddFriendModal
             toggleModal={this.toggleModal}
