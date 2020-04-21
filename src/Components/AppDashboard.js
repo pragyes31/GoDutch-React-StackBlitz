@@ -232,23 +232,18 @@ function UsersData({ allUsers, allExpenses }) {
             </div>
             <div className={`${userId}-expenses-list user-balance-sheet`} >
               {allExpenses.map(({ expenseName, expenseAmount, selectedPartner, payer }, index) => {
+                //console.log(userName, selectedPartner)
                 if (userName === selectedPartner) {
-                  return {
-
-                  }
-/* 
- <div class={`expense-${index+1} expense-item`}>
-    <div class="expense-detail">
-      ${payerObj[0].userName} paid ${expenseObj.paidAmount} for ${
-      expenseObj.type
-    }
-    </div>
-    <div class="modify-expense">
-      <div class="edit-expense-${expenseCount} edit-expense">Edit</div>
-      <div class="delete-expense-${expenseCount} delete-expense">Delete</div>
-    </div>
-    </div>
-*/
+                  console.log(userName, selectedPartner)
+                  return (<div key={userId} className={`expense-${index + 1} expense-item`}>
+                    <div className="expense-detail">
+                      {`${payer} paid ${expenseAmount} for ${expenseName}`}
+                    </div>
+                    <div className="modify-expense">
+                      <div className={`edit-expense-${index + 1} edit-expense`}>Edit</div>
+                      <div className={`delete-expense-${index + 1} delete-expense`}>Delete</div>
+                    </div>
+                  </div>)
                 }
               })}
             </div>
@@ -261,15 +256,15 @@ function UsersData({ allUsers, allExpenses }) {
 
 
 /* 
- <div class="expense-${expenseCount} expense-item">
-    <div class="expense-detail">
+ <div className="expense-${expenseCount} expense-item">
+    <div className="expense-detail">
       ${payerObj[0].userName} paid ${expenseObj.paidAmount} for ${
       expenseObj.type
     }
     </div>
-    <div class="modify-expense">
-      <div class="edit-expense-${expenseCount} edit-expense">Edit</div>
-      <div class="delete-expense-${expenseCount} delete-expense">Delete</div>
+    <div className="modify-expense">
+      <div className="edit-expense-${expenseCount} edit-expense">Edit</div>
+      <div className="delete-expense-${expenseCount} delete-expense">Delete</div>
     </div>
     </div>
 */
