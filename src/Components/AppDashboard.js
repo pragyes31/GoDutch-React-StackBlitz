@@ -215,7 +215,7 @@ class AddExpenseModal extends React.Component {
   }
 }
 
-function UsersData({ allUsers }) {
+function UsersData({ allUsers, allExpenses }) {
   let usersToUI = allUsers.slice(1);
   return (
     <div className="users-data">
@@ -230,13 +230,49 @@ function UsersData({ allUsers }) {
                 </div>
               </div>
             </div>
-            <div className={`${userId}-expenses-list user-balance-sheet`} />
+            <div className={`${userId}-expenses-list user-balance-sheet`} >
+              {allExpenses.map(({ expenseName, expenseAmount, selectedPartner, payer }, index) => {
+                if (userName === selectedPartner) {
+                  return {
+
+                  }
+/* 
+ <div class={`expense-${index+1} expense-item`}>
+    <div class="expense-detail">
+      ${payerObj[0].userName} paid ${expenseObj.paidAmount} for ${
+      expenseObj.type
+    }
+    </div>
+    <div class="modify-expense">
+      <div class="edit-expense-${expenseCount} edit-expense">Edit</div>
+      <div class="delete-expense-${expenseCount} delete-expense">Delete</div>
+    </div>
+    </div>
+*/
+                }
+              })}
+            </div>
           </div>
         );
       })}
     </div>
   );
 }
+
+
+/* 
+ <div class="expense-${expenseCount} expense-item">
+    <div class="expense-detail">
+      ${payerObj[0].userName} paid ${expenseObj.paidAmount} for ${
+      expenseObj.type
+    }
+    </div>
+    <div class="modify-expense">
+      <div class="edit-expense-${expenseCount} edit-expense">Edit</div>
+      <div class="delete-expense-${expenseCount} delete-expense">Delete</div>
+    </div>
+    </div>
+*/
 
 export default class AppDashboard extends React.Component {
   constructor(props) {
@@ -294,7 +330,9 @@ export default class AppDashboard extends React.Component {
       <div className="app-dashboard">
         <Header title="Go-Dutch App" />
         <AddNewBtns toggleModal={this.toggleModal} />
-        <UsersData allUsers={this.state.allUsers} currentExpense={this.state.currentExpense} />
+        <UsersData allUsers={this.state.allUsers} 
+        allExpenses={this.state.allExpenses} 
+        />
         {this.state.friendModal && (
           <AddFriendModal
             toggleModal={this.toggleModal}
