@@ -230,11 +230,34 @@ function UsersData({ allUsers, allExpenses }) {
                 </div>
               </div>
             </div>
-            <div className={`${userId}-expenses-list user-balance-sheet`} >
+            <ExpenseToUI allExpenses={allExpenses}/>
+            {/*<div className={`${userId}-expenses-list user-balance-sheet`} >
               {allExpenses.map(({ expenseName, expenseAmount, selectedPartner, payer }, index) => {
-                //console.log(userName, selectedPartner)
                 if (userName === selectedPartner) {
-                  console.log(userName, selectedPartner)
+                  return (<div key={userId} className={`expense-${index + 1} expense-item`}>
+                    <div className="expense-detail">
+                      {`${payer} paid ${expenseAmount} for ${expenseName}`}
+                    </div>
+                    <div className="modify-expense">
+                      <div className={`edit-expense-${index + 1} edit-expense`}>Edit</div>
+                      <div className={`delete-expense-${index + 1} delete-expense`}>Delete</div>
+                    </div>
+                  </div>)
+                }
+              })}
+            </div> */ }
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function ExpenseToUI({ allExpenses }) {
+  return (
+    <div className={`${userId}-expenses-list user-balance-sheet`} >
+              {allExpenses.map(({ expenseName, expenseAmount, selectedPartner, payer }, index) => {
+                if (userName === selectedPartner) {
                   return (<div key={userId} className={`expense-${index + 1} expense-item`}>
                     <div className="expense-detail">
                       {`${payer} paid ${expenseAmount} for ${expenseName}`}
@@ -247,27 +270,8 @@ function UsersData({ allUsers, allExpenses }) {
                 }
               })}
             </div>
-          </div>
-        );
-      })}
-    </div>
-  );
+  )
 }
-
-
-/* 
- <div className="expense-${expenseCount} expense-item">
-    <div className="expense-detail">
-      ${payerObj[0].userName} paid ${expenseObj.paidAmount} for ${
-      expenseObj.type
-    }
-    </div>
-    <div className="modify-expense">
-      <div className="edit-expense-${expenseCount} edit-expense">Edit</div>
-      <div className="delete-expense-${expenseCount} delete-expense">Delete</div>
-    </div>
-    </div>
-*/
 
 export default class AppDashboard extends React.Component {
   constructor(props) {
