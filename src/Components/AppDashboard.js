@@ -96,12 +96,30 @@ class AddExpenseModal extends React.Component {
     this.state = {
       expenseName: "",
       expenseAmount: "",
-      selectedPartner: "",
-      payer: "You"
+      selectedPartner: {
+        name:"",
+        id:""
+      },
+      payer: {
+        name:"",
+        id:""
+      }
     };
   }
   handleChange = e => {
+    if(e.target.name === "expenseName" || e.target.name === "expenseAmount") {
     this.setState({ [e.target.name]: e.target.value });
+    }
+    else {
+      this.setState({
+        [e.target.name]: {
+          name: e.target.value,
+          id: e.target.options[e.target.selectedIndex].getAttribute("userkey")
+        }
+      });
+      setTimeout(() => console.log(this.state.selectedPartner), 100)
+    }
+    
   };
   render() {
     let payerToUI = this.props.allUsers.slice(1);
@@ -149,16 +167,16 @@ class AddExpenseModal extends React.Component {
             <select
               name="selectedPartner"
               id="selectedPartner"
-              value={this.state.selectedPartner}
+              value={this.state.selectedPartner.name}
               onChange={this.handleChange}
               required
             >
               <option name="selectedPartner" value="choose">-Choose a friend-</option>
-              {payerToUI.map(({ userName }) => {
+              {payerToUI.map(({ userId, userName }) => {
                 return (
                   <option
                     name="selectedPartner"
-                    key={userName}
+                    userkey={userId}
                     value={userName}
                   >
                     {userName}
@@ -178,9 +196,9 @@ class AddExpenseModal extends React.Component {
                 required
               >
                 <option name="payer" value="">--</option>
-                <option name="payer" value="You">You</option>
-                <option name="payer" value={this.state.selectedPartner}>
-                  {this.state.selectedPartner}
+                <option name="payer" userkey="user-0" value="You">You</option>
+                <option name="payer" userkey={this.state.selectedPartner.id} value={this.state.selectedPartner.name}>
+                  {this.state.selectedPartner.name}
                 </option>
               </select>
             </div>
@@ -225,14 +243,14 @@ function UsersData({ allUsers, allExpenses }) {
   );
 }
 
-function ExpenseToUI({ currentUser, allExpenses }) {
+function ExpenseToUI({currentUser, allExpenses }) {
   return (
     <div className={`${currentUser.userId}-expenses-list user-balance-sheet`} >
       {allExpenses.map(({ expenseName, expenseAmount, selectedPartner, payer }, index) => {
-        if (currentUser.userName === selectedPartner) {
+        if (currentUser.userId === selectedPartner.id) {
           return (<div key={currentUser.userId} className={`expense-${index + 1} expense-item`}>
             <div className="expense-detail">
-              {`${payer} paid ${expenseAmount} for ${expenseName}`}
+              {`${payer.name} paid ${expenseAmount} for ${expenseName}`}
             </div>
             <div className="modify-expense">
               <div className={`edit-expense-${index + 1} edit-expense`}>Edit</div>
@@ -268,18 +286,9 @@ export default class AppDashboard extends React.Component {
       : this.setState({ expenseModal: !this.state.expenseModal });
   };
 
-  loadUserToState = friendName => {
-    let user = {
-      userName: friendName,
-      userId: `user-${this.state.allUsers.length}`,
-      userBalance: 0
-    };
-    let allUsers = [...this.state.allUsers, user];
-    this.setState({ allUsers });
-  };
-
   addExpense = (e, currentExpense) => {
     e.preventDefault();
+
     this.setState({
       allExpenses: [...this.state.allExpenses, currentExpense],
       currentExpense,

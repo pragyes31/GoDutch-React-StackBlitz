@@ -126,10 +126,6 @@ width: 30%;
   @include flex-position(space-around, center);
 }
 
-.modify-expense {
-  @include flex-position(space-between, center);
-}
-
 .edit-expense, .delete-expense {
 text-decoration: underline;
 cursor:pointer;
