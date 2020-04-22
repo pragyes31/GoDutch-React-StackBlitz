@@ -119,6 +119,17 @@ body {
   @include flex-position(space-between, center);
 }
 
+.edit-expense, .delete-expense {
+text-decoration: underline;
+cursor:pointer;
+color:#0b6efd;
+margin: 5px;
+}
+
+.delete-expense {
+
+}
+
 
 .modal-window {
   background-color: #eee;
