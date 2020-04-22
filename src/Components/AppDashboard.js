@@ -230,22 +230,7 @@ function UsersData({ allUsers, allExpenses }) {
                 </div>
               </div>
             </div>
-            <ExpenseToUI allExpenses={allExpenses}/>
-            {/*<div className={`${userId}-expenses-list user-balance-sheet`} >
-              {allExpenses.map(({ expenseName, expenseAmount, selectedPartner, payer }, index) => {
-                if (userName === selectedPartner) {
-                  return (<div key={userId} className={`expense-${index + 1} expense-item`}>
-                    <div className="expense-detail">
-                      {`${payer} paid ${expenseAmount} for ${expenseName}`}
-                    </div>
-                    <div className="modify-expense">
-                      <div className={`edit-expense-${index + 1} edit-expense`}>Edit</div>
-                      <div className={`delete-expense-${index + 1} delete-expense`}>Delete</div>
-                    </div>
-                  </div>)
-                }
-              })}
-            </div> */ }
+            <ExpenseToUI currentUser={{ userName, userId, userBalance }} allExpenses={allExpenses}/>
           </div>
         );
       })}
@@ -253,12 +238,12 @@ function UsersData({ allUsers, allExpenses }) {
   );
 }
 
-function ExpenseToUI({ allExpenses }) {
+function ExpenseToUI({ currentUser,allExpenses }) {
   return (
-    <div className={`${userId}-expenses-list user-balance-sheet`} >
+    <div className={`${currentUser.userId}-expenses-list user-balance-sheet`} >
               {allExpenses.map(({ expenseName, expenseAmount, selectedPartner, payer }, index) => {
-                if (userName === selectedPartner) {
-                  return (<div key={userId} className={`expense-${index + 1} expense-item`}>
+                if (currentUser.userName === selectedPartner) {
+                  return (<div key={currentUser.userId} className={`expense-${index + 1} expense-item`}>
                     <div className="expense-detail">
                       {`${payer} paid ${expenseAmount} for ${expenseName}`}
                     </div>
