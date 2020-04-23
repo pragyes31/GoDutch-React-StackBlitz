@@ -107,7 +107,6 @@ class AddExpenseModal extends React.Component {
     };
   }
   handleChange = e => {
-   
     if(e.target.name === "expenseName" || e.target.name === "expenseAmount") {
     this.setState({ [e.target.name]: e.target.value });
     }
@@ -121,10 +120,8 @@ class AddExpenseModal extends React.Component {
     } 
      let perPersonShare = (+this.state.expenseAmount)/2;
      if(this.state.payer.id === "user-0") {
-       
      }
   };
-
 
   render() {
     let payerToUI = this.props.allUsers.slice(1);
