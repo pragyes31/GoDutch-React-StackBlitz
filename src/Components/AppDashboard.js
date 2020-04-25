@@ -61,7 +61,10 @@ class AddFriendModal extends React.Component {
         </header>
         <form
           className="add-friend-form"
-          onSubmit={e => this.props.addFriend(e, this.state.friendName)}
+          onSubmit={(e) => {
+this.props.addFriend(this.state.friendName);
+e.preventDefault();
+          }}
         >
           <div className="friend-name-input">
             <label htmlFor="friend-name">Name:</label>
@@ -114,7 +117,7 @@ class AddExpenseModal extends React.Component {
       this.setState({
         [e.target.name]: {
           name: e.target.value,
-          id: e.target.options[e.target.selectedIndex].getAttribute("userkey")
+          id: e.target.options[e.target.selectedIndex].getAttribute("data-userkey")
         }
       });
     } 
@@ -178,8 +181,9 @@ class AddExpenseModal extends React.Component {
                 return (
                   <option
                     name="selectedPartner"
-                    userkey={userId}
+                    data-userkey={userId}
                     value={userName}
+                    key={userId}
                   >
                     {userName}
                   </option>
@@ -198,8 +202,8 @@ class AddExpenseModal extends React.Component {
                 required
               >
                 <option name="payer" value="">--</option>
-                <option name="payer" userkey="user-0" value="You">You</option>
-                <option name="payer" userkey={this.state.selectedPartner.id} value={this.state.selectedPartner.name}>
+                <option name="payer" data-userkey="user-0" value="You">You</option>
+                <option name="payer" data-userkey={this.state.selectedPartner.id} value={this.state.selectedPartner.name}>
                   {this.state.selectedPartner.name}
                 </option>
               </select>
@@ -246,11 +250,12 @@ function UsersData({ allUsers, allExpenses }) {
 }
 
 function ExpenseToUI({currentUser, allExpenses }) {
+  console.log(currentUser.userId);
   return (
     <div className={`${currentUser.userId}-expenses-list user-balance-sheet`} >
       {allExpenses.map(({ expenseName, expenseAmount, selectedPartner, payer }, index) => {
         if (currentUser.userId === selectedPartner.id) {
-          return (<div key={currentUser.userId} className={`expense-${index + 1} expense-item`}>
+          return (<div key={`expense-${index + 1}`} className={`expense-${index + 1} expense-item`}>
             <div className="expense-detail">
               {`${payer.name} paid ${expenseAmount} for ${expenseName}`}
             </div>
@@ -298,8 +303,7 @@ export default class AppDashboard extends React.Component {
     })
   };
 
-  addFriend = (e, friendName) => {
-    e.preventDefault();
+  addFriend = (friendName) => {
     let friendName = formatInput(friendName);
     let user = {
       userName: friendName,
