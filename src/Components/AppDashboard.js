@@ -136,11 +136,11 @@ class AddExpenseModal extends React.Component {
         className="add-expense-modal modal-window"
       >
         <form
-          onSubmit={(e) =>
-            this.props.addExpense(
-              e,
-              this.state
-            )
+          onSubmit={(e) => {
+           this.props.addExpense(this.state) 
+           e.preventDefault();
+          }
+            
           }
           className="add-expense-form"
         >
@@ -293,9 +293,7 @@ export default class AppDashboard extends React.Component {
       : this.setState({ expenseModal: !this.state.expenseModal });
   };
 
-  addExpense = (e, currentExpense) => {
-    e.preventDefault();
-
+  addExpense = (currentExpense) => {
     this.setState({
       allExpenses: [...this.state.allExpenses, currentExpense],
       currentExpense,
