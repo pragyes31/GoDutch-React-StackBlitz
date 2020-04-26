@@ -236,7 +236,7 @@ class AddExpenseModal extends React.Component {
   }
 }
 
-function UsersData({ allUsers, allExpenses, deleteExpense }) {
+function UsersData({ allUsers, allExpenses, deleteExpense, editExpense }) {
   let usersToUI = allUsers.slice(1);
   return (
     <div className="users-data">
@@ -251,7 +251,7 @@ function UsersData({ allUsers, allExpenses, deleteExpense }) {
                 </div>
               </div>
             </div>
-            <ExpenseToUI currentUser={{ userName, userId, userBalance }} allExpenses={allExpenses} deleteExpense={deleteExpense} />
+            <ExpenseToUI currentUser={{ userName, userId, userBalance }} allExpenses={allExpenses} deleteExpense={deleteExpense} editExpense={editExpense} />
           </div>
         );
       })}
@@ -259,39 +259,7 @@ function UsersData({ allUsers, allExpenses, deleteExpense }) {
   );
 }
 
-// class ExpenseToUI extends React.Component {
-//   constructor(props) {
-//     super(props);
-//   }
-//   editExpense = () => {
-// console.log("delete this expense")
-//   }
-//   deleteExpense = (e) => {
-// let expenseId = e.target.getAttribute("data-userid")
-// this.props.allExpenses.filter((expense) => expense.expenseId !== expenseId)
-//   }
-//   render() { 
-//     return (
-//     <div className={`${this.props.currentUser.userId}-expenses-list user-balance-sheet`} >
-//       {this.props.allExpenses.map(({ expenseId, expenseName, expenseAmount, selectedPartner, payer }, index) => {
-//         if (this.props.currentUser.userId == selectedPartner.id) {
-//           return (<div key={expenseId} className="expense-item">
-//             <div className="expense-detail">
-//               {`${payer.name} paid ${expenseAmount} for ${expenseName}`}
-//             </div>
-//             <div className="modify-expense">
-//               <div data-userid={expenseId} className="edit-expense" onClick={this.editExpense}>Edit</div>
-//               <div data-userid={expenseId} className="delete-expense" onClick={this.deleteExpense}>Delete</div>
-//             </div>
-//           </div>)
-//         }
-//       })}
-//     </div>
-//   )
-//   }
-// }
-
-function ExpenseToUI({currentUser, allExpenses, deleteExpense }) {
+function ExpenseToUI({currentUser, allExpenses, deleteExpense, editExpense }) {
   return (
     <div className={`${currentUser.userId}-expenses-list user-balance-sheet`} >
       {allExpenses.map(({ expenseId, expenseName, expenseAmount, selectedPartner, payer }, index) => {
@@ -342,9 +310,13 @@ export default class AppDashboard extends React.Component {
     })
   };
 
+  editExpense = (expenseId) => {
+console.log("edit expense")
+  }
+
   deleteExpense = (expenseId) => {
-    let updatedExpenses = this.state.allExpenses.filter(expense => expenseId !== expense.expenseId)
-    this.setState({allExpenses: updatedExpenses})
+    let allExpenses = this.state.allExpenses.filter(expense => expenseId !== expense.expenseId)
+    this.setState({ allExpenses })
   }
 
   addFriend = (friendName) => {
@@ -366,6 +338,7 @@ export default class AppDashboard extends React.Component {
         <UsersData allUsers={this.state.allUsers}
           allExpenses={this.state.allExpenses}
           deleteExpense={this.deleteExpense}
+          editExpense={this.editExpense}
         />
         {this.state.friendModal && (
           <AddFriendModal
