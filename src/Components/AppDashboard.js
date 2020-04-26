@@ -97,6 +97,7 @@ class AddExpenseModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      expenseId:0,
       expenseName: "",
       expenseAmount: "",
       selectedPartner: {
@@ -110,14 +111,19 @@ class AddExpenseModal extends React.Component {
     };
   }
   handleChange = e => {
+
     if(e.target.name === "expenseName" || e.target.name === "expenseAmount") {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({ 
+      [e.target.name]: e.target.value,
+      expenseId:Date.now()
+     });
     }
     else {
       this.setState({
         [e.target.name]: {
           name: e.target.value,
-          id: e.target.options[e.target.selectedIndex].getAttribute("data-userkey")
+          id: +e.target.options[e.target.selectedIndex].getAttribute("data-userkey"),
+          expenseId:Date.now()
         }
       });
     } 
@@ -126,8 +132,12 @@ class AddExpenseModal extends React.Component {
      }
   };
 
+  addNewExpense = (e) => {
+
+  }
+
   render() {
-    let payerToUI = this.props.allUsers.slice(1);
+    let partnersToUI = this.props.allUsers.slice(1);
     return (
       <Modal
         isOpen={true}
@@ -137,6 +147,8 @@ class AddExpenseModal extends React.Component {
       >
         <form
           onSubmit={(e) => {
+            // this.setState({expenseName:40})
+            // console.log(this.state)
            this.props.addExpense(this.state) 
            e.preventDefault();
           }
@@ -171,13 +183,12 @@ class AddExpenseModal extends React.Component {
             <label htmlFor="selectedPartner">Select expense partner</label>
             <select
               name="selectedPartner"
-              id="selectedPartner"
               value={this.state.selectedPartner.name}
               onChange={this.handleChange}
               required
             >
               <option name="selectedPartner" value="choose">-Choose a friend-</option>
-              {payerToUI.map(({ userId, userName }) => {
+              {partnersToUI.map(({ userId, userName }) => {
                 return (
                   <option
                     name="selectedPartner"
@@ -197,7 +208,6 @@ class AddExpenseModal extends React.Component {
               <label htmlFor="payer">Paid by:</label>
               <select
                 name="payer"
-                id="payer"
                 onChange={this.handleChange}
                 required
               >
@@ -232,7 +242,7 @@ function UsersData({ allUsers, allExpenses }) {
     <div className="users-data">
       {usersToUI.map(({ userName, userId, userBalance }) => {
         return (
-          <div key={`${userId}-data`} className={`${userId}-data user-data`}>
+          <div key={userId} className="user-data">
             <div className="user-summary">
               <div className="user-details">
                 <div className={`${userId} user-name`}>{userName}</div>
@@ -250,18 +260,17 @@ function UsersData({ allUsers, allExpenses }) {
 }
 
 function ExpenseToUI({currentUser, allExpenses }) {
-  console.log(currentUser.userId);
   return (
     <div className={`${currentUser.userId}-expenses-list user-balance-sheet`} >
-      {allExpenses.map(({ expenseName, expenseAmount, selectedPartner, payer }, index) => {
-        if (currentUser.userId === selectedPartner.id) {
-          return (<div key={`expense-${index + 1}`} className={`expense-${index + 1} expense-item`}>
+      {allExpenses.map(({ expenseId, expenseName, expenseAmount, selectedPartner, payer }, index) => {
+        if (currentUser.userId == selectedPartner.id) {
+          return (<div key={expenseId} className="expense-item">
             <div className="expense-detail">
               {`${payer.name} paid ${expenseAmount} for ${expenseName}`}
             </div>
             <div className="modify-expense">
-              <div className={`edit-expense-${index + 1} edit-expense`}>Edit</div>
-              <div className={`delete-expense-${index + 1} delete-expense`}>Delete</div>
+              <div data-userid={expenseId} className="edit-expense">Edit</div>
+              <div data-userid={expenseId} className="delete-expense">Delete</div>
             </div>
           </div>)
         }
@@ -305,7 +314,7 @@ export default class AppDashboard extends React.Component {
     let friendName = formatInput(friendName);
     let user = {
       userName: friendName,
-      userId: `user-${this.state.allUsers.length}`,
+      userId: Date.now(),
       userBalance: 0
     };
     let allUsers = [...this.state.allUsers, user];
