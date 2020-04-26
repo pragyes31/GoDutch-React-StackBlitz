@@ -111,7 +111,6 @@ class AddExpenseModal extends React.Component {
     };
   }
   handleChange = e => {
-
     if(e.target.name === "expenseName" || e.target.name === "expenseAmount") {
     this.setState({ 
       [e.target.name]: e.target.value,
@@ -311,7 +310,7 @@ export default class AppDashboard extends React.Component {
   };
 
   editExpense = (expenseId) => {
-console.log("edit expense")
+console.log("edit expense");
   }
 
   deleteExpense = (expenseId) => {
@@ -351,6 +350,7 @@ console.log("edit expense")
             toggleModal={this.toggleModal}
             allUsers={this.state.allUsers}
             addExpense={this.addExpense}
+            editExpense={this.editExpense}
           />
         )}
       </div>
