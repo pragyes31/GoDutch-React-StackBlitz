@@ -236,7 +236,7 @@ class AddExpenseModal extends React.Component {
   }
 }
 
-function UsersData({ allUsers, allExpenses }) {
+function UsersData({ allUsers, allExpenses, deleteExpense }) {
   let usersToUI = allUsers.slice(1);
   return (
     <div className="users-data">
@@ -251,7 +251,7 @@ function UsersData({ allUsers, allExpenses }) {
                 </div>
               </div>
             </div>
-            <ExpenseToUI currentUser={{ userName, userId, userBalance }} allExpenses={allExpenses} />
+            <ExpenseToUI currentUser={{ userName, userId, userBalance }} allExpenses={allExpenses} deleteExpense={deleteExpense} />
           </div>
         );
       })}
@@ -259,59 +259,57 @@ function UsersData({ allUsers, allExpenses }) {
   );
 }
 
-class ExpenseToUI extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  editExpense = () => {
-console.log("delete this expense")
-  }
-  deleteExpense = () => {
-console.log("delete this expense")
-  }
-  render() { 
-    return (
-    <div className={`${this.props.currentUser.userId}-expenses-list user-balance-sheet`} >
-      {this.props.allExpenses.map(({ expenseId, expenseName, expenseAmount, selectedPartner, payer }, index) => {
-        if (this.props.currentUser.userId == selectedPartner.id) {
-          return (<div key={expenseId} className="expense-item">
-            <div className="expense-detail">
-              {`${payer.name} paid ${expenseAmount} for ${expenseName}`}
-            </div>
-            <div className="modify-expense">
-              <div data-userid={expenseId} className="edit-expense" onClick={this.editExpense}>Edit</div>
-              <div data-userid={expenseId} className="delete-expense" onClick={this.DeleteExpense}>Delete</div>
-            </div>
-          </div>)
-        }
-      })}
-    </div>
-  )
-  }
-}
-
-// function ExpenseToUI({currentUser, allExpenses }) {
-//   deleteExpense = (expenseId) => {
-// console.log(e.target.getAttribute("data-userid"))
+// class ExpenseToUI extends React.Component {
+//   constructor(props) {
+//     super(props);
 //   }
-//   return (
-//     <div className={`${currentUser.userId}-expenses-list user-balance-sheet`} >
-//       {allExpenses.map(({ expenseId, expenseName, expenseAmount, selectedPartner, payer }, index) => {
-//         if (currentUser.userId == selectedPartner.id) {
+//   editExpense = () => {
+// console.log("delete this expense")
+//   }
+//   deleteExpense = (e) => {
+// let expenseId = e.target.getAttribute("data-userid")
+// this.props.allExpenses.filter((expense) => expense.expenseId !== expenseId)
+//   }
+//   render() { 
+//     return (
+//     <div className={`${this.props.currentUser.userId}-expenses-list user-balance-sheet`} >
+//       {this.props.allExpenses.map(({ expenseId, expenseName, expenseAmount, selectedPartner, payer }, index) => {
+//         if (this.props.currentUser.userId == selectedPartner.id) {
 //           return (<div key={expenseId} className="expense-item">
 //             <div className="expense-detail">
 //               {`${payer.name} paid ${expenseAmount} for ${expenseName}`}
 //             </div>
 //             <div className="modify-expense">
-//               <div data-userid={expenseId} className="edit-expense" onClick={deleteExpense}>Edit</div>
-//               <div data-userid={expenseId} className="delete-expense">Delete</div>
+//               <div data-userid={expenseId} className="edit-expense" onClick={this.editExpense}>Edit</div>
+//               <div data-userid={expenseId} className="delete-expense" onClick={this.deleteExpense}>Delete</div>
 //             </div>
 //           </div>)
 //         }
 //       })}
 //     </div>
 //   )
+//   }
 // }
+
+function ExpenseToUI({currentUser, allExpenses, deleteExpense }) {
+  return (
+    <div className={`${currentUser.userId}-expenses-list user-balance-sheet`} >
+      {allExpenses.map(({ expenseId, expenseName, expenseAmount, selectedPartner, payer }, index) => {
+        if (currentUser.userId == selectedPartner.id) {
+          return (<div key={expenseId} className="expense-item">
+            <div className="expense-detail">
+              {`${payer.name} paid ${expenseAmount} for ${expenseName}`}
+            </div>
+            <div className="modify-expense">
+              <div className="edit-expense" onClick={() => editExpense(expenseId)}>Edit</div>
+              <div className="delete-expense" onClick={() => deleteExpense(expenseId)}>Delete</div>
+            </div>
+          </div>)
+        }
+      })}
+    </div>
+  )
+}
 
 export default class AppDashboard extends React.Component {
   constructor(props) {
@@ -344,6 +342,11 @@ export default class AppDashboard extends React.Component {
     })
   };
 
+  deleteExpense = (expenseId) => {
+    let updatedExpenses = this.state.allExpenses.filter(expense => expenseId !== expense.expenseId)
+    this.setState({allExpenses: updatedExpenses})
+  }
+
   addFriend = (friendName) => {
     let friendName = formatInput(friendName);
     let user = {
@@ -362,6 +365,7 @@ export default class AppDashboard extends React.Component {
         <AddNewBtns toggleModal={this.toggleModal} />
         <UsersData allUsers={this.state.allUsers}
           allExpenses={this.state.allExpenses}
+          deleteExpense={this.deleteExpense}
         />
         {this.state.friendModal && (
           <AddFriendModal
