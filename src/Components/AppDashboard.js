@@ -259,25 +259,59 @@ function UsersData({ allUsers, allExpenses }) {
   );
 }
 
-function ExpenseToUI({currentUser, allExpenses }) {
-  return (
-    <div className={`${currentUser.userId}-expenses-list user-balance-sheet`} >
-      {allExpenses.map(({ expenseId, expenseName, expenseAmount, selectedPartner, payer }, index) => {
-        if (currentUser.userId == selectedPartner.id) {
+class ExpenseToUI extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  editExpense = () => {
+console.log("delete this expense")
+  }
+  deleteExpense = () => {
+console.log("delete this expense")
+  }
+  render() { 
+    return (
+    <div className={`${this.props.currentUser.userId}-expenses-list user-balance-sheet`} >
+      {this.props.allExpenses.map(({ expenseId, expenseName, expenseAmount, selectedPartner, payer }, index) => {
+        if (this.props.currentUser.userId == selectedPartner.id) {
           return (<div key={expenseId} className="expense-item">
             <div className="expense-detail">
               {`${payer.name} paid ${expenseAmount} for ${expenseName}`}
             </div>
             <div className="modify-expense">
-              <div data-userid={expenseId} className="edit-expense">Edit</div>
-              <div data-userid={expenseId} className="delete-expense">Delete</div>
+              <div data-userid={expenseId} className="edit-expense" onClick={this.editExpense}>Edit</div>
+              <div data-userid={expenseId} className="delete-expense" onClick={this.DeleteExpense}>Delete</div>
             </div>
           </div>)
         }
       })}
     </div>
   )
+  }
 }
+
+// function ExpenseToUI({currentUser, allExpenses }) {
+//   deleteExpense = (expenseId) => {
+// console.log(e.target.getAttribute("data-userid"))
+//   }
+//   return (
+//     <div className={`${currentUser.userId}-expenses-list user-balance-sheet`} >
+//       {allExpenses.map(({ expenseId, expenseName, expenseAmount, selectedPartner, payer }, index) => {
+//         if (currentUser.userId == selectedPartner.id) {
+//           return (<div key={expenseId} className="expense-item">
+//             <div className="expense-detail">
+//               {`${payer.name} paid ${expenseAmount} for ${expenseName}`}
+//             </div>
+//             <div className="modify-expense">
+//               <div data-userid={expenseId} className="edit-expense" onClick={deleteExpense}>Edit</div>
+//               <div data-userid={expenseId} className="delete-expense">Delete</div>
+//             </div>
+//           </div>)
+//         }
+//       })}
+//     </div>
+//   )
+// }
 
 export default class AppDashboard extends React.Component {
   constructor(props) {
