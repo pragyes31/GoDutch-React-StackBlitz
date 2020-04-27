@@ -284,7 +284,6 @@ export default class AppDashboard extends React.Component {
     this.state = {
       friendModal: false,
       expenseModal: false,
-      expenseCount: 1,
       allUsers: [
         {
           userName: "You",
