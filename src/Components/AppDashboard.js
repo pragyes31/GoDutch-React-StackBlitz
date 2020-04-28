@@ -97,16 +97,16 @@ class AddExpenseModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      expenseId:0,
-      expenseName: "",
-      expenseAmount: "",
+      expenseId: this.props.expenseToEdit.expenseId,
+      expenseName: this.props.expenseToEdit.expenseName,
+      expenseAmount: this.props.expenseToEdit.expenseAmount,
       selectedPartner: {
-        name:"",
-        id:""
+        name:this.props.expenseToEdit.selectedPartner.name,
+        id:this.props.expenseToEdit.selectedPartner.id
       },
       payer: {
-        name:"",
-        id:""
+        name:this.props.expenseToEdit.payer.name,
+        id:this.props.expenseToEdit.payer.id
       }
     };
   }
@@ -130,10 +130,6 @@ class AddExpenseModal extends React.Component {
      if(this.state.payer.id === "user-0") {
      }
   };
-
-  addNewExpense = (e) => {
-
-  }
 
   render() {
     let partnersToUI = this.props.allUsers.slice(1);
@@ -162,6 +158,7 @@ class AddExpenseModal extends React.Component {
               id="expense-name"
               name="expenseName"
               type="text"
+              value={this.state.expenseName}
               onChange={this.handleChange}
               required
             />
@@ -172,6 +169,7 @@ class AddExpenseModal extends React.Component {
               id="expense-amount"
               name="expenseAmount"
               type="number"
+              value={this.state.expenseAmount}
               onChange={this.handleChange}
               required
             />
@@ -290,7 +288,19 @@ export default class AppDashboard extends React.Component {
         }
       ],
       allExpenses: [],
-      expenseToEdit: {}
+      expenseToEdit: {
+      expenseId:0,
+      expenseName: "",
+      expenseAmount: "",
+      selectedPartner: {
+        name:"",
+        id:""
+      },
+      payer: {
+        name:"",
+        id:""
+      }
+    }
     };
   }
   toggleModal = clickedBtn => {
@@ -309,7 +319,9 @@ export default class AppDashboard extends React.Component {
 
   editExpense = (expenseId) => {
 let expenseToEdit = this.state.allExpenses.filter(expense => expenseId === expense.expenseId)
-console.log(expenseToEdit)
+this.setState({expenseToEdit })
+setTimeout(() => console.log(this.state.expenseToEdit),0)
+
   }
 
   deleteExpense = (expenseId) => {
@@ -350,6 +362,7 @@ console.log(expenseToEdit)
             allUsers={this.state.allUsers}
             addExpense={this.addExpense}
             editExpense={this.editExpense}
+            expenseToEdit={this.state.expenseToEdit}
           />
         )}
       </div>
