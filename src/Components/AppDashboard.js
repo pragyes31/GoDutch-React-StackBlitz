@@ -122,8 +122,8 @@ class AddExpenseModal extends React.Component {
         [e.target.name]: {
           name: e.target.value,
           id: +e.target.options[e.target.selectedIndex].getAttribute("data-userkey"),
-          expenseId:Date.now()
-        }
+        },
+        expenseId:Date.now()
       });
     } 
      let perPersonShare = (+this.state.expenseAmount)/2;
@@ -146,8 +146,6 @@ class AddExpenseModal extends React.Component {
       >
         <form
           onSubmit={(e) => {
-            // this.setState({expenseName:40})
-            // console.log(this.state)
            this.props.addExpense(this.state) 
            e.preventDefault();
           }
@@ -291,7 +289,8 @@ export default class AppDashboard extends React.Component {
           userBalance: 0
         }
       ],
-      allExpenses: []
+      allExpenses: [],
+      expenseToEdit: {}
     };
   }
   toggleModal = clickedBtn => {
@@ -309,7 +308,8 @@ export default class AppDashboard extends React.Component {
   };
 
   editExpense = (expenseId) => {
-console.log("edit expense");
+let expenseToEdit = this.state.allExpenses.filter(expense => expenseId === expense.expenseId)
+console.log(expenseToEdit)
   }
 
   deleteExpense = (expenseId) => {
