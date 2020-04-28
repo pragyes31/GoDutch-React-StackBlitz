@@ -256,7 +256,7 @@ function UsersData({ allUsers, allExpenses, deleteExpense, editExpense }) {
 
 function ExpenseToUI({currentUser, allExpenses, deleteExpense, editExpense }) {
   return (
-    <div className={`${currentUser.userId}-expenses-list user-balance-sheet`} >
+    <div className="user-balance-sheet" >
       {allExpenses.map(({ expenseId, expenseName, expenseAmount, selectedPartner, payer }, index) => {
         if (currentUser.userId == selectedPartner.id) {
           return (<div key={expenseId} className="expense-item">
@@ -318,10 +318,9 @@ export default class AppDashboard extends React.Component {
   };
 
   editExpense = (expenseId) => {
-let expenseToEdit = this.state.allExpenses.filter(expense => expenseId === expense.expenseId)
-this.setState({expenseToEdit })
-setTimeout(() => console.log(this.state.expenseToEdit),0)
-
+let expenseToEdit = this.state.allExpenses.find(expense => expenseId === expense.expenseId)
+this.setState({expenseToEdit,  expenseModal: !this.state.expenseModal})
+    console.log(expenseToEdit)
   }
 
   deleteExpense = (expenseId) => {
