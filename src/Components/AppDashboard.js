@@ -127,8 +127,6 @@ class AddExpenseModal extends React.Component {
       });
     } 
      let perPersonShare = (+this.state.expenseAmount)/2;
-     if(this.state.payer.id === "user-0") {
-     }
   };
 
   render() {
@@ -203,6 +201,7 @@ class AddExpenseModal extends React.Component {
               <label htmlFor="payer">Paid by:</label>
               <select
                 name="payer"
+                value={this.state.payer.name}
                 onChange={this.handleChange}
                 required
               >
@@ -318,9 +317,9 @@ export default class AppDashboard extends React.Component {
   };
 
   editExpense = (expenseId) => {
+    console.log(this.state.payer)
 let expenseToEdit = this.state.allExpenses.find(expense => expenseId === expense.expenseId)
 this.setState({expenseToEdit,  expenseModal: !this.state.expenseModal})
-    console.log(expenseToEdit)
   }
 
   deleteExpense = (expenseId) => {
