@@ -123,7 +123,7 @@ class AddExpenseModal extends React.Component {
           name: e.target.value,
           id: +e.target.options[e.target.selectedIndex].getAttribute("data-userkey"),
         },
-        expenseId:Date.now()
+        expenseId:this.state.expenseId !== "" ? "" : Date.now()
       });
     } 
      let perPersonShare = (+this.state.expenseAmount)/2;
