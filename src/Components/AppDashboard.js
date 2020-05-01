@@ -111,6 +111,7 @@ class AddExpenseModal extends React.Component {
     };
   }
   handleChange = e => {
+    //console.log(e.target.value)
     if(e.target.name === "expenseName" || e.target.name === "expenseAmount") {
     this.setState({ 
       [e.target.name]: e.target.value,
@@ -119,6 +120,7 @@ class AddExpenseModal extends React.Component {
     }
     else {
       this.setState({
+        
         [e.target.name]: {
           name: e.target.value,
           id: +e.target.options[e.target.selectedIndex].getAttribute("data-userkey"),
@@ -126,6 +128,7 @@ class AddExpenseModal extends React.Component {
         expenseId:this.state.expenseId !== "" ? "" : Date.now()
       });
     } 
+    //setTimeout(() => console.log(this.state.payer), 0)
      let perPersonShare = (+this.state.expenseAmount)/2;
   };
 
@@ -201,12 +204,11 @@ class AddExpenseModal extends React.Component {
               <label htmlFor="payer">Paid by:</label>
               <select
                 name="payer"
-                value={this.state.payer.name}
                 onChange={this.handleChange}
                 required
               >
                 <option name="payer" value="">--</option>
-                <option name="payer" data-userkey="user-0" value="You">You</option>
+                <option name="payer" data-userkey="0" value="You">You</option>
                 <option name="payer" data-userkey={this.state.selectedPartner.id} value={this.state.selectedPartner.name}>
                   {this.state.selectedPartner.name}
                 </option>
@@ -282,7 +284,7 @@ export default class AppDashboard extends React.Component {
       allUsers: [
         {
           userName: "You",
-          userId: "user-0",
+          userId: "0",
           userBalance: 0
         }
       ],
@@ -317,9 +319,10 @@ export default class AppDashboard extends React.Component {
   };
 
   editExpense = (expenseId) => {
-    console.log(this.state.payer)
+    
 let expenseToEdit = this.state.allExpenses.find(expense => expenseId === expense.expenseId)
 this.setState({expenseToEdit,  expenseModal: !this.state.expenseModal})
+setTimeout(() => console.log(this.state.expenseToEdit.payer), 0)
   }
 
   deleteExpense = (expenseId) => {
