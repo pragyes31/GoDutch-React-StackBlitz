@@ -114,18 +114,15 @@ class AddExpenseModal extends React.Component {
     //console.log(e.target.value)
     if(e.target.name === "expenseName" || e.target.name === "expenseAmount") {
     this.setState({ 
-      [e.target.name]: e.target.value,
-      expenseId:Date.now()
+      [e.target.name]: e.target.value
      });
     }
     else {
       this.setState({
-        
         [e.target.name]: {
           name: e.target.value,
           id: +e.target.options[e.target.selectedIndex].getAttribute("data-userkey"),
-        },
-        expenseId:this.state.expenseId !== "" ? "" : Date.now()
+        }
       });
     } 
     //setTimeout(() => console.log(this.state.payer), 0)
@@ -232,6 +229,89 @@ class AddExpenseModal extends React.Component {
   }
 }
 
+class EditExpenseModal extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    let partnersToUI = this.props.allUsers.slice(1);
+    return (
+      <Modal
+        isOpen={true}
+        contentLabel="Edit Expense"
+        ariaHideApp={false}
+        className="edit-expense-modal modal-window"
+      >
+        <form
+          className="edit-expense-form"
+        >
+          <header className="modal-header edit-expense-header">
+            Add new Expense
+          </header>
+          <div className="expense-name-input input-div">
+            <label htmlFor="expense-name">Expense Name</label>
+            <input
+              id="expense-name"
+              required
+            />
+          </div>
+          <div className="expense-amt-input input-div">
+            <label htmlFor="expense-amount">Amount</label>
+            <input
+              id="expense-amount"
+              required
+            />
+          </div>
+          <div className="selectedPartner-input input-div">
+            <label htmlFor="selectedPartner">Select expense partner</label>
+            <select
+              name="selectedPartner"
+              required
+            >
+              <option name="selectedPartner" value="choose">-Choose a friend-</option>
+              {partnersToUI.map(({ userId, userName }) => {
+                return (
+                  <option
+                    name="selectedPartner"
+                    value={userName}
+                  >
+                    
+                  </option>
+                );
+              })}
+            </select>
+          </div> 
+        { /* {!!this.state.selectedPartner && (
+            <div className="payer-input input-div">
+              <label htmlFor="payer">Paid by:</label>
+              <select
+                name="payer"
+                required
+              >
+                <option name="payer" value="">--</option>
+                <option name="payer" value="You">You</option>
+                <option name="payer" >
+                  
+                </option>
+              </select>
+            </div>
+          )} */ }
+          <button type="submit" className="expense-btn modal-btn">
+            Edit Expense
+          </button>
+          <br />
+          <button
+            type="button"
+            className="close-modal close-expense-modal modal-btn"
+          >
+            Cancel
+          </button>
+        </form>
+      </Modal>
+    )
+  }
+}
+
 function UsersData({ allUsers, allExpenses, deleteExpense, editExpense }) {
   let usersToUI = allUsers.slice(1);
   return (
@@ -255,17 +335,18 @@ function UsersData({ allUsers, allExpenses, deleteExpense, editExpense }) {
   );
 }
 
-function ExpenseToUI({currentUser, allExpenses, deleteExpense, editExpense }) {
+function ExpenseToUI({currentUser, allExpenses, deleteExpense }) {
   return (
     <div className="user-balance-sheet" >
       {allExpenses.map(({ expenseId, expenseName, expenseAmount, selectedPartner, payer }, index) => {
         if (currentUser.userId == selectedPartner.id) {
-          return (<div key={expenseId} className="expense-item">
+          return (
+            <div key={expenseId} className="expense-item">
             <div className="expense-detail">
               {`${payer.name} paid ${expenseAmount} for ${expenseName}`}
             </div>
             <div className="modify-expense">
-              <div className="edit-expense" onClick={() => editExpense(expenseId)}>Edit</div>
+              <div className="edit-expense" onClick={() => toggleModal("edit")} >Edit</div>
               <div className="delete-expense" onClick={() => deleteExpense(expenseId)}>Delete</div>
             </div>
           </div>)
@@ -281,6 +362,7 @@ export default class AppDashboard extends React.Component {
     this.state = {
       friendModal: false,
       expenseModal: false,
+      editExpenseModal:false,
       allUsers: [
         {
           userName: "You",
@@ -305,21 +387,27 @@ export default class AppDashboard extends React.Component {
     };
   }
   toggleModal = clickedBtn => {
-    clickedBtn === "friend"
-      ? this.setState({ friendModal: !this.state.friendModal })
-      : this.setState({ expenseModal: !this.state.expenseModal });
+    switch(clickedBtn) {
+      case "friend":
+      this.setState({ friendModal: !this.state.friendModal });
+      break;
+      case "expense":
+      this.setState({ expenseModal: !this.state.expenseModal });
+      break;
+      case "edit":
+      this.setState({ editExpenseModal: !this.state.editExpenseModal });
+      break;
+    }
   };
 
   addExpense = (currentExpense) => {
     this.setState({
       allExpenses: [...this.state.allExpenses, currentExpense],
-      currentExpense,
-      expenseModal: !this.state.expenseModal
+      expenseModal: !this.state.expenseModal,
     })
   };
 
   editExpense = (expenseId) => {
-    
 let expenseToEdit = this.state.allExpenses.find(expense => expenseId === expense.expenseId)
 this.setState({expenseToEdit,  expenseModal: !this.state.expenseModal})
 setTimeout(() => console.log(this.state.expenseToEdit.payer), 0)
@@ -366,7 +454,17 @@ setTimeout(() => console.log(this.state.expenseToEdit.payer), 0)
             expenseToEdit={this.state.expenseToEdit}
           />
         )}
+        {
+          this.state.editExpenseModal && (
+            <EditExpenseModal
+              toggleModal={this.toggleModal}
+              allUsers={this.state.allUsers}
+            />
+          )
+        }
       </div>
     );
   }
 }
+
+
