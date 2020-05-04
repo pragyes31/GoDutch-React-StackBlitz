@@ -273,7 +273,7 @@ class EditExpenseModal extends React.Component {
         <form
           className="edit-expense-form"
           onSubmit={e => {
-            this.props.addEditedExpense(this.state);
+            this.props.updateExpense(this.state);
             e.preventDefault();
           }}
         >
@@ -312,6 +312,8 @@ class EditExpenseModal extends React.Component {
                   <option
                     name="selectedPartner"
                     value={userName}
+                    data-userkey={userId}
+                    onChange={this.handleChange}
                   >
                     {userName}
                   </option>
@@ -319,21 +321,22 @@ class EditExpenseModal extends React.Component {
               })}
             </select>
           </div> 
-        { /* {!!this.state.selectedPartner && (
+         {!!this.state.selectedPartner.name && (
             <div className="payer-input input-div">
               <label htmlFor="payer">Paid by:</label>
               <select
                 name="payer"
+                onChange={this.handleChange}
                 required
               >
                 <option name="payer" value="">--</option>
-                <option name="payer" value="You">You</option>
-                <option name="payer" >
-                  
+                <option name="payer" data-userkey="0" value="You">You</option>
+                <option name="payer" data-userkey={this.state.selectedPartner.id} value={this.state.selectedPartner.name}>
+                  {this.state.selectedPartner.name}
                 </option>
               </select>
             </div>
-          )} */ }
+          )} 
           <button type="submit" className="expense-btn modal-btn">
             Edit Expense
           </button>
@@ -440,6 +443,7 @@ export default class AppDashboard extends React.Component {
   };
 
   addExpense = (currentExpense) => {
+    currentExpense.expenseId = Date.now();
     this.setState({
       allExpenses: [...this.state.allExpenses, currentExpense],
       expenseModal: !this.state.expenseModal,
@@ -449,7 +453,10 @@ export default class AppDashboard extends React.Component {
   editExpense = (expenseId) => {
 let expenseToEdit = this.state.allExpenses.find(expense => expenseId === expense.expenseId)
 this.setState({expenseToEdit, editExpenseModal: !this.state.editExpenseModal})
-setTimeout(() => console.log(this.state.expenseToEdit.payer), 0)
+  }
+
+  updateExpense = (expenseToUpdate) => {
+    console.log(expenseToUpdate)
   }
 
   deleteExpense = (expenseId) => {
@@ -500,7 +507,7 @@ setTimeout(() => console.log(this.state.expenseToEdit.payer), 0)
               allUsers={this.state.allUsers}
               expenseToEdit={this.state.expenseToEdit}
               editExpense={this.editExpense}
-              addEditedExpense={this.addEditedExpense}
+              updateExpense={this.updateExpense}
             />
           )
         }
