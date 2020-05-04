@@ -312,7 +312,7 @@ class EditExpenseModal extends React.Component {
   }
 }
 
-function UsersData({ allUsers, allExpenses, deleteExpense, editExpense }) {
+function UsersData({ allUsers, allExpenses, deleteExpense, editExpense, toggleModal }) {
   let usersToUI = allUsers.slice(1);
   return (
     <div className="users-data">
@@ -327,7 +327,7 @@ function UsersData({ allUsers, allExpenses, deleteExpense, editExpense }) {
                 </div>
               </div>
             </div>
-            <ExpenseToUI currentUser={{ userName, userId, userBalance }} allExpenses={allExpenses} deleteExpense={deleteExpense} editExpense={editExpense} />
+            <ExpenseToUI currentUser={{ userName, userId, userBalance }} allExpenses={allExpenses} deleteExpense={deleteExpense} editExpense={editExpense} toggleModal={toggleModal} />
           </div>
         );
       })}
@@ -335,7 +335,7 @@ function UsersData({ allUsers, allExpenses, deleteExpense, editExpense }) {
   );
 }
 
-function ExpenseToUI({currentUser, allExpenses, deleteExpense }) {
+function ExpenseToUI({currentUser, allExpenses, deleteExpense, toggleModal }) {
   return (
     <div className="user-balance-sheet" >
       {allExpenses.map(({ expenseId, expenseName, expenseAmount, selectedPartner, payer }, index) => {
@@ -438,6 +438,7 @@ setTimeout(() => console.log(this.state.expenseToEdit.payer), 0)
           allExpenses={this.state.allExpenses}
           deleteExpense={this.deleteExpense}
           editExpense={this.editExpense}
+          toggleModal={this.toggleModal}
         />
         {this.state.friendModal && (
           <AddFriendModal
@@ -466,5 +467,3 @@ setTimeout(() => console.log(this.state.expenseToEdit.payer), 0)
     );
   }
 }
-
-

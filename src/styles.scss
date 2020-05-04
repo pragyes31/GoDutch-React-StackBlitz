@@ -151,7 +151,7 @@ color:#0b6efd;
   height: 230px;
 }
 
-.add-expense-modal {
+.add-expense-modal, edit-expense-modal {
   width: 400px;
   height: 330px;
 }
@@ -184,7 +184,7 @@ form {
   color:$background-color;
 }
 
-.add-expense-header, .expense-btn {
+.add-expense-header, .expense-btn, .edit-expense-header {
   background-color: lighten($primary-color, 5%);
   color:$font-color;
 }
