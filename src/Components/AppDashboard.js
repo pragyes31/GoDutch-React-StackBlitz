@@ -303,6 +303,7 @@ class EditExpenseModal extends React.Component {
           <button
             type="button"
             className="close-modal close-expense-modal modal-btn"
+            onClick={() => this.props.toggleModal("edit")}
           >
             Cancel
           </button>
