@@ -97,18 +97,18 @@ class AddExpenseModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      expenseId: this.props.expenseToEdit.expenseId,
-      expenseName: this.props.expenseToEdit.expenseName,
-      expenseAmount: this.props.expenseToEdit.expenseAmount,
+      expenseId:0,
+      expenseName: "",
+      expenseAmount: "",
       selectedPartner: {
-        name:this.props.expenseToEdit.selectedPartner.name,
-        id:this.props.expenseToEdit.selectedPartner.id
+        name:"",
+        id:""
       },
       payer: {
-        name:this.props.expenseToEdit.payer.name,
-        id:this.props.expenseToEdit.payer.id
+        name:"",
+        id:""
       }
-    };
+    }
   }
   handleChange = e => {
     //console.log(e.target.value)
@@ -124,9 +124,7 @@ class AddExpenseModal extends React.Component {
           id: +e.target.options[e.target.selectedIndex].getAttribute("data-userkey"),
         }
       });
-    } 
-    //setTimeout(() => console.log(this.state.payer), 0)
-     let perPersonShare = (+this.state.expenseAmount)/2;
+    }
   };
 
   render() {
@@ -232,7 +230,37 @@ class AddExpenseModal extends React.Component {
 class EditExpenseModal extends React.Component {
   constructor(props) {
     super(props);
+     this.state = {
+      expenseId: this.props.expenseToEdit.expenseId,
+      expenseName: this.props.expenseToEdit.expenseName,
+      expenseAmount: this.props.expenseToEdit.expenseAmount,
+      selectedPartner: {
+        name:this.props.expenseToEdit.selectedPartner.name,
+        id:this.props.expenseToEdit.selectedPartner.id
+      },
+      payer: {
+        name:this.props.expenseToEdit.payer.name,
+        id:this.props.expenseToEdit.payer.id
+      },     
+    };
   }
+  
+  handleChange = e => {
+    if(e.target.name === "expenseName" || e.target.name === "expenseAmount") {
+    this.setState({ 
+      [e.target.name]: e.target.value
+     });
+    }
+    else {
+      this.setState({
+        [e.target.name]: {
+          name: e.target.value,
+          id: +e.target.options[e.target.selectedIndex].getAttribute("data-userkey"),
+        }
+      });
+    }
+  };
+
   render() {
     let partnersToUI = this.props.allUsers.slice(1);
     return (
@@ -244,6 +272,10 @@ class EditExpenseModal extends React.Component {
       >
         <form
           className="edit-expense-form"
+          onSubmit={e => {
+            this.props.addEditedExpense(this.state);
+            e.preventDefault();
+          }}
         >
           <header className="modal-header edit-expense-header">
             Add new Expense
@@ -253,6 +285,8 @@ class EditExpenseModal extends React.Component {
             <input
               id="expense-name"
               required
+              value={this.state.expenseName}
+              onChange={this.handleChange}
             />
           </div>
           <div className="expense-amt-input input-div">
@@ -260,6 +294,8 @@ class EditExpenseModal extends React.Component {
             <input
               id="expense-amount"
               required
+              value={this.state.expenseAmount}
+              onChange={this.handleChange}
             />
           </div>
           <div className="selectedPartner-input input-div">
@@ -267,6 +303,8 @@ class EditExpenseModal extends React.Component {
             <select
               name="selectedPartner"
               required
+              value={this.state.selectedPartner.name}
+              onChange={this.handleChange}
             >
               <option name="selectedPartner" value="choose">-Choose a friend-</option>
               {partnersToUI.map(({ userId, userName }) => {
@@ -275,7 +313,7 @@ class EditExpenseModal extends React.Component {
                     name="selectedPartner"
                     value={userName}
                   >
-                    
+                    {userName}
                   </option>
                 );
               })}
@@ -313,7 +351,7 @@ class EditExpenseModal extends React.Component {
   }
 }
 
-function UsersData({ allUsers, allExpenses, deleteExpense, editExpense, toggleModal }) {
+function UsersData({ allUsers, allExpenses, deleteExpense, editExpense, editExpense }) {
   let usersToUI = allUsers.slice(1);
   return (
     <div className="users-data">
@@ -328,7 +366,7 @@ function UsersData({ allUsers, allExpenses, deleteExpense, editExpense, toggleMo
                 </div>
               </div>
             </div>
-            <ExpenseToUI currentUser={{ userName, userId, userBalance }} allExpenses={allExpenses} deleteExpense={deleteExpense} editExpense={editExpense} toggleModal={toggleModal} />
+            <ExpenseToUI currentUser={{ userName, userId, userBalance }} allExpenses={allExpenses} deleteExpense={deleteExpense} editExpense={editExpense} editExpense={editExpense} />
           </div>
         );
       })}
@@ -336,7 +374,7 @@ function UsersData({ allUsers, allExpenses, deleteExpense, editExpense, toggleMo
   );
 }
 
-function ExpenseToUI({currentUser, allExpenses, deleteExpense, toggleModal }) {
+function ExpenseToUI({currentUser, allExpenses, deleteExpense, editExpense }) {
   return (
     <div className="user-balance-sheet" >
       {allExpenses.map(({ expenseId, expenseName, expenseAmount, selectedPartner, payer }, index) => {
@@ -347,7 +385,7 @@ function ExpenseToUI({currentUser, allExpenses, deleteExpense, toggleModal }) {
               {`${payer.name} paid ${expenseAmount} for ${expenseName}`}
             </div>
             <div className="modify-expense">
-              <div className="edit-expense" onClick={() => toggleModal("edit")} >Edit</div>
+              <div className="edit-expense" onClick={() => editExpense(expenseId)} >Edit</div>
               <div className="delete-expense" onClick={() => deleteExpense(expenseId)}>Delete</div>
             </div>
           </div>)
@@ -410,7 +448,7 @@ export default class AppDashboard extends React.Component {
 
   editExpense = (expenseId) => {
 let expenseToEdit = this.state.allExpenses.find(expense => expenseId === expense.expenseId)
-this.setState({expenseToEdit,  expenseModal: !this.state.expenseModal})
+this.setState({expenseToEdit, editExpenseModal: !this.state.editExpenseModal})
 setTimeout(() => console.log(this.state.expenseToEdit.payer), 0)
   }
 
@@ -453,7 +491,6 @@ setTimeout(() => console.log(this.state.expenseToEdit.payer), 0)
             allUsers={this.state.allUsers}
             addExpense={this.addExpense}
             editExpense={this.editExpense}
-            expenseToEdit={this.state.expenseToEdit}
           />
         )}
         {
@@ -461,6 +498,9 @@ setTimeout(() => console.log(this.state.expenseToEdit.payer), 0)
             <EditExpenseModal
               toggleModal={this.toggleModal}
               allUsers={this.state.allUsers}
+              expenseToEdit={this.state.expenseToEdit}
+              editExpense={this.editExpense}
+              addEditedExpense={this.addEditedExpense}
             />
           )
         }
