@@ -111,7 +111,6 @@ class AddExpenseModal extends React.Component {
     }
   }
   handleChange = e => {
-    //console.log(e.target.value)
     if(e.target.name === "expenseName" || e.target.name === "expenseAmount") {
     this.setState({ 
       [e.target.name]: e.target.value
@@ -283,7 +282,7 @@ class EditExpenseModal extends React.Component {
           <div className="expense-name-input input-div">
             <label htmlFor="expense-name">Expense Name</label>
             <input
-              id="expense-name"
+              name="expenseName"
               required
               value={this.state.expenseName}
               onChange={this.handleChange}
@@ -292,7 +291,7 @@ class EditExpenseModal extends React.Component {
           <div className="expense-amt-input input-div">
             <label htmlFor="expense-amount">Amount</label>
             <input
-              id="expense-amount"
+              name="expenseAmount"
               required
               value={this.state.expenseAmount}
               onChange={this.handleChange}
@@ -314,6 +313,7 @@ class EditExpenseModal extends React.Component {
                     value={userName}
                     data-userkey={userId}
                     onChange={this.handleChange}
+                    key={userId}
                   >
                     {userName}
                   </option>
@@ -456,7 +456,23 @@ this.setState({expenseToEdit, editExpenseModal: !this.state.editExpenseModal})
   }
 
   updateExpense = (expenseToUpdate) => {
-    console.log(expenseToUpdate)
+    let index = this.state.allExpenses.findIndex(({expenseId}) => expenseId === expenseToUpdate.expenseId)
+    this.setState({allExpenses:this.state.allExpenses.splice(index,1, expenseToUpdate),
+    editExpenseModal: !this.state.editExpenseModal,
+    expenseToEdit: {
+      expenseId:0,
+      expenseName: "",
+      expenseAmount: "",
+      selectedPartner: {
+        name:"",
+        id:""
+      },
+      payer: {
+        name:"",
+        id:""
+      }
+    }
+     })
   }
 
   deleteExpense = (expenseId) => {
