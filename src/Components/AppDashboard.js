@@ -197,7 +197,12 @@ class AddExpenseModal extends React.Component {
           {!!this.state.selectedPartner && (
             <div className="payer-input input-div">
               <label htmlFor="payer">Paid by:</label>
-              <select name="payer" onChange={this.handleChange} required>
+              <select
+                name="payer"
+                onChange={this.handleChange}
+                value={this.state.payer.name}
+                required
+              >
                 <option name="payer" value="">
                   --
                 </option>
@@ -268,6 +273,7 @@ class EditExpenseModal extends React.Component {
 
   render() {
     let partnersToUI = this.props.allUsers.slice(1);
+    console.log(this.state);
     return (
       <Modal
         isOpen={true}
@@ -332,7 +338,12 @@ class EditExpenseModal extends React.Component {
           {!!this.state.selectedPartner.name && (
             <div className="payer-input input-div">
               <label htmlFor="payer">Paid by:</label>
-              <select name="payer" onChange={this.handleChange} required>
+              <select
+                name="payer"
+                onChange={this.handleChange}
+                value={this.state.payer.name}
+                required
+              >
                 <option name="payer" value="">
                   --
                 </option>
