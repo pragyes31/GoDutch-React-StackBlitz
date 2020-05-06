@@ -134,7 +134,7 @@ class AddExpenseModal extends React.Component {
         isOpen={true}
         contentLabel="Add New Expense"
         ariaHideApp={false}
-        className="add-expense-modal modal-window"
+        className="add-expense-modal  modal-window"
       >
         <form
           onSubmit={e => {
