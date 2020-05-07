@@ -493,10 +493,36 @@ export default class AppDashboard extends React.Component {
     }
   };
 
-  addExpense = currentExpense => {
-    currentExpense.expenseId = Date.now();
+  addExpense = ({ expenseId, expenseAmount, selectedPartner, payer }) => {
+    expenseId = Date.now();
+    let prePersonShare = expenseAmount / 2;
+    let partnerIndex = this.state.allUsers.findIndex(
+      user => user.userId === selectedPartner.id
+    );
+    let updatedUser = this.state.allUsers[partnerIndex];
+
+    if (payer.name === "You") {
+      updatedUser.userBalance -= prePersonShare;
+      let allUsers = [
+        ...this.state.allUsers.slice(0, partnerIndex),
+        updatedUser,
+        ...this.state.allUsers.slice(partnerIndex + 1)
+      ];
+      this.setState({ allUsers });
+    } else {
+      updatedUser.userBalance += prePersonShare;
+      let allUsers = [
+        ...this.state.allUsers.slice(0, partnerIndex),
+        updatedUser,
+        ...this.state.allUsers.slice(partnerIndex + 1)
+      ];
+      this.setState({ allUsers });
+    }
     this.setState({
-      allExpenses: [...this.state.allExpenses, currentExpense],
+      allExpenses: [
+        ...this.state.allExpenses,
+        { expenseId, expenseAmount, selectedPartner, payer }
+      ],
       expenseModal: !this.state.expenseModal
     });
   };
@@ -538,6 +564,8 @@ export default class AppDashboard extends React.Component {
       }
     });
   };
+
+  splitExpense = () => {};
 
   deleteExpense = expenseId => {
     let allExpenses = this.state.allExpenses.filter(
