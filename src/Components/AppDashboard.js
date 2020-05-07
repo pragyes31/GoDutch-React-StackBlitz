@@ -508,7 +508,7 @@ export default class AppDashboard extends React.Component {
       ],
       expenseModal: !this.state.expenseModal
     });
-    this.newSplitExpenses();
+    this.splitExpenses();
   };
 
   editExpense = expenseId => {
@@ -557,7 +557,7 @@ export default class AppDashboard extends React.Component {
     });
   };
 
-  newSplitExpenses = () => {
+  splitExpenses = () => {
     let allUsers = this.state.allUsers.slice(1);
     let allExpenses = this.state.allExpenses;
     console.log(allUsers, allExpenses);
