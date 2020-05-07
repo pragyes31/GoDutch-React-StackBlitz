@@ -273,7 +273,7 @@ class EditExpenseModal extends React.Component {
 
   render() {
     let partnersToUI = this.props.allUsers.slice(1);
-    console.log(this.state);
+    //console.log(this.state);
     return (
       <Modal
         isOpen={true}
@@ -493,59 +493,51 @@ export default class AppDashboard extends React.Component {
     }
   };
 
-  addExpense = ({ expenseId, expenseAmount, selectedPartner, payer }) => {
+  addExpense = ({
+    expenseName,
+    expenseId,
+    expenseAmount,
+    selectedPartner,
+    payer
+  }) => {
     expenseId = Date.now();
-    let prePersonShare = expenseAmount / 2;
-    let partnerIndex = this.state.allUsers.findIndex(
-      user => user.userId === selectedPartner.id
-    );
-    let updatedUser = this.state.allUsers[partnerIndex];
-
-    if (payer.name === "You") {
-      updatedUser.userBalance -= prePersonShare;
-      let allUsers = [
-        ...this.state.allUsers.slice(0, partnerIndex),
-        updatedUser,
-        ...this.state.allUsers.slice(partnerIndex + 1)
-      ];
-      this.setState({ allUsers });
-    } else {
-      updatedUser.userBalance += prePersonShare;
-      let allUsers = [
-        ...this.state.allUsers.slice(0, partnerIndex),
-        updatedUser,
-        ...this.state.allUsers.slice(partnerIndex + 1)
-      ];
-      this.setState({ allUsers });
-    }
     this.setState({
       allExpenses: [
         ...this.state.allExpenses,
-        { expenseId, expenseAmount, selectedPartner, payer }
+        { expenseName, expenseId, expenseAmount, selectedPartner, payer }
       ],
       expenseModal: !this.state.expenseModal
     });
+    this.newSplitExpenses();
   };
 
   editExpense = expenseId => {
     let expenseToEdit = this.state.allExpenses.find(
       expense => expenseId === expense.expenseId
     );
+
     this.setState({
       expenseToEdit,
       editExpenseModal: !this.state.editExpenseModal
     });
   };
 
-  updateExpense = expenseToUpdate => {
-    let index = this.state.allExpenses.findIndex(
-      ({ expenseId }) => expenseId === expenseToUpdate.expenseId
+  updateExpense = ({
+    expenseName,
+    expenseId,
+    expenseAmount,
+    selectedPartner,
+    payer
+  }) => {
+    let expenseIndex = this.state.allExpenses.findIndex(
+      ({ expenseId }) => expenseId === expenseId
     );
     let allExpenses = [
-      ...this.state.allExpenses.slice(0, index),
-      expenseToUpdate,
-      ...this.state.allExpenses.slice(index + 1)
+      ...this.state.allExpenses.slice(0, expenseIndex),
+      { expenseName, expenseId, expenseAmount, selectedPartner, payer },
+      ...this.state.allExpenses.slice(expenseIndex + 1)
     ];
+
     this.setState({
       allExpenses,
       editExpenseModal: !this.state.editExpenseModal,
@@ -565,7 +557,31 @@ export default class AppDashboard extends React.Component {
     });
   };
 
-  splitExpense = () => {};
+  newSplitExpenses = () => {
+    let allUsers = this.state.allUsers.slice(1);
+    let allExpenses = this.state.allExpenses;
+    console.log(allUsers, allExpenses);
+    allUsers.forEach((curUser, index) => {
+      let userBalance = 0;
+      let currentUser = curUser;
+      allExpenses
+        .filter(expense => expense.expenseId === currentUser.userId)
+        .forEach(expense => {
+          console.log("hiiii");
+          expense.payer.name === "You"
+            ? (userBalance -= expense.expenseAmount / 2)
+            : (userBalance += expense.expenseAmount / 2);
+        });
+      currentUser.userBalance = userBalance;
+      this.setState({
+        allUsers: [
+          ...this.state.allUsers.slice(0, index),
+          currentUser,
+          ...this.state.allUsers.slice(index + 1)
+        ]
+      });
+    });
+  };
 
   deleteExpense = expenseId => {
     let allExpenses = this.state.allExpenses.filter(
