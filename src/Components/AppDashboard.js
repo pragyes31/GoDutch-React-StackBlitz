@@ -452,6 +452,7 @@ function ExpenseToUI({ currentUser, allExpenses, deleteExpense, editExpense }) {
 export default class AppDashboard extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       friendModal: false,
       expenseModal: false,
@@ -459,7 +460,7 @@ export default class AppDashboard extends React.Component {
       allUsers: [
         {
           userName: "You",
-          userId: "0",
+          userId: 0,
           userBalance: 0
         }
       ],
@@ -560,14 +561,16 @@ export default class AppDashboard extends React.Component {
   splitExpenses = () => {
     let allUsers = this.state.allUsers.slice(1);
     let allExpenses = this.state.allExpenses;
-    console.log(allUsers, allExpenses);
-    allUsers.forEach((curUser, index) => {
+    allUsers.forEach((user, index) => {
       let userBalance = 0;
-      let currentUser = curUser;
+      let currentUser = user;
+      let test = allExpenses.filter(expense => {
+        expense.selectedPartner.id === user.userId;
+      });
       allExpenses
-        .filter(expense => expense.expenseId === currentUser.userId)
+        .filter(expense => expense.selectedPartner.id === user.userId)
         .forEach(expense => {
-          console.log("hiiii");
+          console.log(expense);
           expense.payer.name === "You"
             ? (userBalance -= expense.expenseAmount / 2)
             : (userBalance += expense.expenseAmount / 2);
@@ -640,3 +643,154 @@ export default class AppDashboard extends React.Component {
     );
   }
 }
+
+/*
+this.state = {
+      friendModal: false,
+      expenseModal: false,
+      editExpenseModal: false,
+      allUsers: [
+        {
+          userName: "You",
+          userId: 0,
+          userBalance: 0
+        }
+      ],
+      allExpenses: [],
+      expenseToEdit: {
+        expenseId: 0,
+        expenseName: "",
+        expenseAmount: "",
+        selectedPartner: {
+          name: "",
+          id: ""
+        },
+        payer: {
+          name: "",
+          id: ""
+        }
+      }
+    };
+*/
+
+this.state = {
+  friendModal: false,
+  expenseModal: false,
+  editExpenseModal: false,
+  allUsers: [
+    {
+      userName: "You",
+      userId: 0,
+      userBalance: 0
+    },
+    {
+      userName: "Itika",
+      userId: 1,
+      userBalance: 0
+    },
+    {
+      userName: "Apoorv",
+      userId: 2,
+      userBalance: 0
+    },
+    {
+      userName: "Lucky",
+      userId: 3,
+      userBalance: 0
+    }
+  ],
+  allExpenses: [
+    {
+      expenseId: 100,
+      expenseName: "Hotels",
+      expenseAmount: 80,
+      selectedPartner: {
+        name: "Itika",
+        id: 1
+      },
+      payer: {
+        name: "Itika",
+        id: 1
+      }
+    },
+    {
+      expenseId: 101,
+      expenseName: "flights",
+      expenseAmount: 40,
+      selectedPartner: {
+        name: "Itika",
+        id: 1
+      },
+      payer: {
+        name: "You",
+        id: 0
+      }
+    },
+    {
+      expenseId: 102,
+      expenseName: "gift",
+      expenseAmount: 1000,
+      selectedPartner: {
+        name: "Lucky",
+        id: 3
+      },
+      payer: {
+        name: "Lucky",
+        id: 3
+      }
+    },
+    {
+      expenseId: 103,
+      expenseName: "Investment",
+      expenseAmount: 10000,
+      selectedPartner: {
+        name: "Apoorv",
+        id: 2
+      },
+      payer: {
+        name: "You",
+        id: "0"
+      }
+    },
+
+    {
+      expenseId: 104,
+      expenseName: "EMI",
+      expenseAmount: 8000,
+      selectedPartner: {
+        name: "Apoorv",
+        id: 2
+      },
+      payer: {
+        name: "Apoorv",
+        id: 2
+      }
+    },
+    {
+      expenseId: 105,
+      expenseName: "Food",
+      expenseAmount: 100,
+      selectedPartner: {
+        name: "Lucky",
+        id: 3
+      },
+      payer: {
+        name: "You",
+        id: 0
+      }
+    }
+  ],
+  expenseToEdit: {
+    expenseId: 0,
+    expenseName: "",
+    expenseAmount: "",
+    selectedPartner: {
+      name: "",
+      id: ""
+    },
+    payer: {
+      name: "",
+      id: ""
+    }
+  }
+};
