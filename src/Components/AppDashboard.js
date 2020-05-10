@@ -74,6 +74,7 @@ class AddFriendModal extends React.Component {
               value={this.state.friendName}
               onChange={this.handleChange}
               required
+              autoFocus="true"
             />
           </div>
           <button type="submit" className="friend-btn modal-btn">
@@ -155,6 +156,7 @@ class AddExpenseModal extends React.Component {
               value={this.state.expenseName}
               onChange={this.handleChange}
               required
+              autoFocus="true"
             />
           </div>
           <div className="expense-amt-input input-div">
@@ -298,6 +300,7 @@ class EditExpenseModal extends React.Component {
               required
               value={this.state.expenseName}
               onChange={this.handleChange}
+              autoFocus="true"
             />
           </div>
           <div className="expense-amt-input input-div">
