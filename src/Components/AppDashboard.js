@@ -509,7 +509,7 @@ export default class AppDashboard extends React.Component {
       ],
       expenseModal: !this.state.expenseModal
     });
-    this.splitExpenses();
+    // this.splitExpenses();
   };
 
   editExpense = expenseId => {
@@ -570,7 +570,6 @@ export default class AppDashboard extends React.Component {
       allExpenses
         .filter(expense => expense.selectedPartner.id === user.userId)
         .forEach(expense => {
-          console.log(expense);
           expense.payer.name === "You"
             ? (userBalance -= expense.expenseAmount / 2)
             : (userBalance += expense.expenseAmount / 2);
