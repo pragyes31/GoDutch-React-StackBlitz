@@ -74,7 +74,7 @@ class AddFriendModal extends React.Component {
               value={this.state.friendName}
               onChange={this.handleChange}
               required
-              autoFocus="true"
+              autoFocus={true}
             />
           </div>
           <button type="submit" className="friend-btn modal-btn">
@@ -156,7 +156,7 @@ class AddExpenseModal extends React.Component {
               value={this.state.expenseName}
               onChange={this.handleChange}
               required
-              autoFocus="true"
+              autoFocus={true}
             />
           </div>
           <div className="expense-amt-input input-div">
@@ -300,7 +300,7 @@ class EditExpenseModal extends React.Component {
               required
               value={this.state.expenseName}
               onChange={this.handleChange}
-              autoFocus="true"
+              autoFocus={true}
             />
           </div>
           <div className="expense-amt-input input-div">
@@ -512,7 +512,7 @@ export default class AppDashboard extends React.Component {
       ],
       expenseModal: !this.state.expenseModal
     });
-    // this.splitExpenses();
+    this.splitExpenses();
   };
 
   editExpense = expenseId => {
@@ -562,30 +562,18 @@ export default class AppDashboard extends React.Component {
   };
 
   splitExpenses = () => {
-    let allUsers = this.state.allUsers.slice(1);
-    let allExpenses = this.state.allExpenses;
-    allUsers.forEach((user, index) => {
+    const allUsers = this.state.allUsers.map(user => {
       let userBalance = 0;
-      let currentUser = user;
-      let test = allExpenses.filter(expense => {
-        expense.selectedPartner.id === user.userId;
-      });
-      allExpenses
+      this.state.allExpenses
         .filter(expense => expense.selectedPartner.id === user.userId)
         .forEach(expense => {
           expense.payer.name === "You"
             ? (userBalance -= expense.expenseAmount / 2)
             : (userBalance += expense.expenseAmount / 2);
         });
-      currentUser.userBalance = userBalance;
-      this.setState({
-        allUsers: [
-          ...this.state.allUsers.slice(0, index),
-          currentUser,
-          ...this.state.allUsers.slice(index + 1)
-        ]
-      });
+      return { ...user, userBalance };
     });
+    this.setState({ allUsers });
   };
 
   deleteExpense = expenseId => {
