@@ -519,7 +519,6 @@ export default class AppDashboard extends React.Component {
     let expenseToEdit = this.state.allExpenses.find(
       expense => expenseId === expense.expenseId
     );
-
     this.setState({
       expenseToEdit,
       editExpenseModal: !this.state.editExpenseModal
@@ -534,7 +533,7 @@ export default class AppDashboard extends React.Component {
     payer
   }) => {
     let expenseIndex = this.state.allExpenses.findIndex(
-      ({ expenseId }) => expenseId === expenseId
+      expense => expense.expenseId === expenseId
     );
     let allExpenses = [
       ...this.state.allExpenses.slice(0, expenseIndex),
@@ -559,6 +558,7 @@ export default class AppDashboard extends React.Component {
         }
       }
     });
+    this.splitExpenses();
   };
 
   splitExpenses = () => {
