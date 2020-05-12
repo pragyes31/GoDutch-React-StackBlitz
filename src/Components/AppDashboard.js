@@ -272,10 +272,8 @@ class EditExpenseModal extends React.Component {
       });
     }
   };
-
   render() {
     let partnersToUI = this.props.allUsers.slice(1);
-    //console.log(this.state);
     return (
       <Modal
         isOpen={true}
@@ -573,7 +571,9 @@ export default class AppDashboard extends React.Component {
         });
       return { ...user, userBalance };
     });
-    this.setState({ allUsers });
+    this.setState(prevState => {
+      allUsers;
+    });
   };
 
   deleteExpense = expenseId => {
