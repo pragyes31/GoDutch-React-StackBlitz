@@ -405,6 +405,7 @@ function UsersData({
               deleteExpense={deleteExpense}
               editExpense={editExpense}
               editExpense={editExpense}
+              allUsers={allUsers}
             />
           </div>
         );
@@ -413,7 +414,14 @@ function UsersData({
   );
 }
 
-function ExpenseToUI({ currentUser, allExpenses, deleteExpense, editExpense }) {
+function ExpenseToUI({
+  currentUser,
+  allExpenses,
+  deleteExpense,
+  editExpense,
+  allUsers
+}) {
+  console.log(allUsers);
   return (
     <div className="user-balance-sheet">
       {allExpenses.map(
@@ -571,9 +579,7 @@ export default class AppDashboard extends React.Component {
         });
       return { ...user, userBalance };
     });
-    this.setState(prevState => {
-      allUsers;
-    });
+    this.setState({ allUsers });
   };
 
   deleteExpense = expenseId => {
