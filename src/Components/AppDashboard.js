@@ -569,6 +569,7 @@ export default class AppDashboard extends React.Component {
 
   splitExpenses = () => {
     const allUsers = this.state.allUsers.map(user => {
+      user.userBalance = 0;
       let userBalance = 0;
       this.state.allExpenses
         .filter(expense => expense.selectedPartner.id === user.userId)
