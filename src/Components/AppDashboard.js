@@ -579,6 +579,7 @@ export default class AppDashboard extends React.Component {
       }
     });
     this.splitExpenses();
+    localStorage.setItem("allExpenses", JSON.stringify(this.state.allExpenses));
   };
 
   splitExpenses = () => {
@@ -612,7 +613,14 @@ export default class AppDashboard extends React.Component {
     };
     let allUsers = [...this.state.allUsers, user];
     this.setState({ allUsers, friendModal: !this.state.friendModal });
+    localStorage.setItem("allUsers", JSON.stringify(this.state.allUsers));
   };
+
+  componentDidMount() {
+    let allUsers = JSON.parse(localStorage.getItem("allUsers"));
+    console.log(allUsers);
+    this.setState({ allUsers });
+  }
 
   render() {
     return (
