@@ -421,7 +421,6 @@ function ExpenseToUI({
   editExpense,
   allUsers
 }) {
-  console.log(allUsers);
   return (
     <div className="user-balance-sheet">
       {allExpenses.map(
@@ -470,6 +469,21 @@ export default class AppDashboard extends React.Component {
         {
           userName: "You",
           userId: 0,
+          userBalance: 0
+        },
+        {
+          userName: "Itika",
+          userId: 1,
+          userBalance: 0
+        },
+        {
+          userName: "Apoorv",
+          userId: 2,
+          userBalance: 0
+        },
+        {
+          userName: "Lucky",
+          userId: 3,
           userBalance: 0
         }
       ],
