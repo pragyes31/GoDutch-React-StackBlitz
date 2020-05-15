@@ -579,7 +579,6 @@ export default class AppDashboard extends React.Component {
       }
     });
     this.splitExpenses();
-    localStorage.setItem("allExpenses", JSON.stringify(this.state.allExpenses));
   };
 
   splitExpenses = () => {
@@ -618,7 +617,6 @@ export default class AppDashboard extends React.Component {
 
   componentDidMount() {
     let allUsers = JSON.parse(localStorage.getItem("allUsers"));
-    console.log(allUsers);
     this.setState({ allUsers });
   }
 
