@@ -502,6 +502,24 @@ export default class AppDashboard extends React.Component {
     }
   };
 
+  addFriend = friendName => {
+    let friendName = formatInput(friendName);
+    let user = {
+      userName: friendName,
+      userId: Date.now(),
+      userBalance: 0
+    };
+    let allUsers = [...this.state.allUsers, user];
+    this.setState({ allUsers, friendModal: !this.state.friendModal });
+    this.setState(prevState => {
+      localStorage.setItem("allUsers", JSON.stringify(allUsers));
+      return {
+        allUsers,
+        friendModal: !prevState.friendModal
+      };
+    });
+  };
+
   addExpense = ({
     expenseName,
     expenseId,
@@ -588,18 +606,6 @@ export default class AppDashboard extends React.Component {
     );
 
     this.setState({ allExpenses });
-  };
-
-  addFriend = friendName => {
-    let friendName = formatInput(friendName);
-    let user = {
-      userName: friendName,
-      userId: Date.now(),
-      userBalance: 0
-    };
-    let allUsers = [...this.state.allUsers, user];
-    this.setState({ allUsers, friendModal: !this.state.friendModal });
-    localStorage.setItem("allUsers", JSON.stringify(this.state.allUsers));
   };
 
   render() {
