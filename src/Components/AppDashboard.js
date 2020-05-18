@@ -460,114 +460,19 @@ function ExpenseToUI({
 export default class AppDashboard extends React.Component {
   constructor(props) {
     super(props);
-
+    let allUsers = JSON.parse(localStorage.getItem("allUsers")) || [
+      {
+        userName: "You",
+        userId: 0,
+        userBalance: 0
+      }
+    ];
     this.state = {
       friendModal: false,
       expenseModal: false,
       editExpenseModal: false,
-      allUsers: [
-        {
-          userName: "You",
-          userId: 0,
-          userBalance: 0
-        },
-        {
-          userName: "Itika",
-          userId: 1,
-          userBalance: 20
-        },
-        {
-          userName: "Apoorv",
-          userId: 2,
-          userBalance: -1000
-        },
-        {
-          userName: "Lucky",
-          userId: 3,
-          userBalance: 450
-        }
-      ],
-      allExpenses: [
-        {
-          expenseId: 100,
-          expenseName: "Hotels",
-          expenseAmount: 80,
-          selectedPartner: {
-            name: "Itika",
-            id: 1
-          },
-          payer: {
-            name: "Itika",
-            id: 1
-          }
-        },
-        {
-          expenseId: 101,
-          expenseName: "flights",
-          expenseAmount: 40,
-          selectedPartner: {
-            name: "Itika",
-            id: 1
-          },
-          payer: {
-            name: "You",
-            id: 0
-          }
-        },
-        {
-          expenseId: 102,
-          expenseName: "gift",
-          expenseAmount: 1000,
-          selectedPartner: {
-            name: "Lucky",
-            id: 3
-          },
-          payer: {
-            name: "Lucky",
-            id: 3
-          }
-        },
-        {
-          expenseId: 103,
-          expenseName: "Investment",
-          expenseAmount: 10000,
-          selectedPartner: {
-            name: "Apoorv",
-            id: 2
-          },
-          payer: {
-            name: "You",
-            id: "0"
-          }
-        },
-
-        {
-          expenseId: 104,
-          expenseName: "EMI",
-          expenseAmount: 8000,
-          selectedPartner: {
-            name: "Apoorv",
-            id: 2
-          },
-          payer: {
-            name: "Apoorv",
-            id: 2
-          }
-        },
-        {
-          expenseId: 105,
-          expenseName: "Food",
-          expenseAmount: 100,
-          selectedPartner: {
-            name: "Lucky",
-            id: 3
-          },
-          payer: {
-            name: "You",
-            id: 0
-          }
-        }
-      ],
+      allUsers,
+      allExpenses: [],
       expenseToEdit: {
         expenseId: 0,
         expenseName: "",
@@ -694,7 +599,7 @@ export default class AppDashboard extends React.Component {
     };
     let allUsers = [...this.state.allUsers, user];
     this.setState({ allUsers, friendModal: !this.state.friendModal });
-    //localStorage.setItem("allUsers", JSON.stringify(this.state.allUsers));
+    localStorage.setItem("allUsers", JSON.stringify(this.state.allUsers));
   };
 
   render() {
