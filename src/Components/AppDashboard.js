@@ -640,7 +640,6 @@ export default class AppDashboard extends React.Component {
       { expenseName, expenseId, expenseAmount, selectedPartner, payer },
       ...this.state.allExpenses.slice(expenseIndex + 1)
     ];
-
     this.setState({
       allExpenses,
       editExpenseModal: !this.state.editExpenseModal,
@@ -662,24 +661,27 @@ export default class AppDashboard extends React.Component {
   };
 
   splitExpenses = () => {
-    const allUsers = this.state.allUsers.map(user => {
-      let userBalance = 0;
-      this.state.allExpenses
-        .filter(expense => expense.selectedPartner.id === user.userId)
-        .forEach(expense => {
-          expense.payer.name === "You"
-            ? (userBalance -= expense.expenseAmount / 2)
-            : (userBalance += expense.expenseAmount / 2);
-        });
-      return { ...user, userBalance };
+    this.setState(prevState => {
+      const allUsers = prevState.allUsers.map(user => {
+        let userBalance = 0;
+        prevState.allExpenses
+          .filter(expense => expense.selectedPartner.id === user.userId)
+          .forEach(expense => {
+            expense.payer.name === "You"
+              ? (userBalance -= expense.expenseAmount / 2)
+              : (userBalance += expense.expenseAmount / 2);
+          });
+        return { ...user, userBalance };
+      });
+      return { allUsers };
     });
-    this.setState({ allUsers });
   };
 
   deleteExpense = expenseId => {
     let allExpenses = this.state.allExpenses.filter(
       expense => expenseId !== expense.expenseId
     );
+
     this.setState({ allExpenses });
   };
 
