@@ -127,7 +127,6 @@ class AddExpenseModal extends React.Component {
   };
 
   render() {
-    let partnersToUI = this.props.allUsers.slice(1);
     return (
       <Modal
         isOpen={true}
@@ -179,7 +178,7 @@ class AddExpenseModal extends React.Component {
               <option name="selectedPartner" value="choose">
                 -Choose a user-
               </option>
-              {partnersToUI.map(({ userId, userName }) => {
+              {this.props.allUsers.map(({ userId, userName }) => {
                 return (
                   <option
                     name="selectedPartner"
@@ -271,7 +270,6 @@ class EditExpenseModal extends React.Component {
     }
   };
   render() {
-    let partnersToUI = this.props.allUsers.slice(1);
     return (
       <Modal
         isOpen={true}
@@ -319,7 +317,7 @@ class EditExpenseModal extends React.Component {
               <option name="selectedPartner" value="choose">
                 -Choose a user-
               </option>
-              {partnersToUI.map(({ userId, userName }) => {
+              {this.props.allUsers.map(({ userId, userName }) => {
                 return (
                   <option
                     name="selectedPartner"
@@ -384,10 +382,9 @@ function UsersData({
   editExpense,
   deleteUser
 }) {
-  let usersToUI = allUsers.slice(1);
   return (
     <div className="users-data">
-      {usersToUI.map(({ userName, userId, userBalance }) => {
+      {allUsers.map(({ userName, userId, userBalance }) => {
         return (
           <div key={userId} className="user-data">
             <div className="user-summary">
@@ -462,13 +459,7 @@ function ExpenseToUI({
 export default class AppDashboard extends React.Component {
   constructor(props) {
     super(props);
-    let allUsers = JSON.parse(localStorage.getItem("allUsers")) || [
-      {
-        userName: "You",
-        userId: 0,
-        userBalance: 0
-      }
-    ];
+    let allUsers = JSON.parse(localStorage.getItem("allUsers")) || [];
     this.state = {
       userModal: false,
       expenseModal: false,
