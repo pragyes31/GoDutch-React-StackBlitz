@@ -17,12 +17,12 @@ const formatInput = input => {
 function AddNewBtns({ toggleModal }) {
   return (
     <div className="add-data">
-      <div className="add-friend">
+      <div className="add-user">
         <button
-          onClick={() => toggleModal("friend")}
-          className="add-friend-btn add-new-btn"
+          onClick={() => toggleModal("user")}
+          className="add-user-btn add-new-btn"
         >
-          Add new Friend
+          Add new user
         </button>
       </div>
       <div className="add-expense">
@@ -37,54 +37,52 @@ function AddNewBtns({ toggleModal }) {
   );
 }
 
-class AddFriendModal extends React.Component {
+class AddUserModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      friendName: ""
+      userName: ""
     };
   }
 
   handleChange = e => {
-    this.setState({ friendName: e.target.value });
+    this.setState({ userName: e.target.value });
   };
   render() {
     return (
       <Modal
         isOpen={true}
-        contentLabel="Add New Friend"
+        contentLabel="Add New user"
         ariaHideApp={false}
-        className="add-friend-modal modal-window"
+        className="add-user-modal modal-window"
       >
-        <header className="modal-header add-friend-header">
-          Add new Friend
-        </header>
+        <header className="modal-header add-user-header">Add new user</header>
         <form
-          className="add-friend-form"
+          className="add-user-form"
           onSubmit={e => {
-            this.props.addFriend(this.state.friendName);
+            this.props.addUser(this.state.userName);
             e.preventDefault();
           }}
         >
-          <div className="friend-name-input">
-            <label htmlFor="friend-name">Name:</label>
+          <div className="user-name-input">
+            <label htmlFor="user-name">Name:</label>
             <input
-              id="friend-name"
+              id="user-name"
               type="text"
-              value={this.state.friendName}
+              value={this.state.userName}
               onChange={this.handleChange}
               required
               autoFocus={true}
             />
           </div>
-          <button type="submit" className="friend-btn modal-btn">
-            Add Friend
+          <button type="submit" className="user-btn modal-btn">
+            Add user
           </button>
           <br />
           <button
             type="button"
-            className="close-modal close-friend-modal modal-btn"
-            onClick={() => this.props.toggleModal("friend")}
+            className="close-modal close-user-modal modal-btn"
+            onClick={() => this.props.toggleModal("user")}
           >
             Cancel
           </button>
@@ -179,7 +177,7 @@ class AddExpenseModal extends React.Component {
               required
             >
               <option name="selectedPartner" value="choose">
-                -Choose a friend-
+                -Choose a user-
               </option>
               {partnersToUI.map(({ userId, userName }) => {
                 return (
@@ -319,7 +317,7 @@ class EditExpenseModal extends React.Component {
               onChange={this.handleChange}
             >
               <option name="selectedPartner" value="choose">
-                -Choose a friend-
+                -Choose a user-
               </option>
               {partnersToUI.map(({ userId, userName }) => {
                 return (
@@ -398,6 +396,7 @@ function UsersData({
                   {!!userBalance && userBalance}
                 </div>
               </div>
+              <div className="delete-user" />
             </div>
             <ExpenseToUI
               currentUser={{ userName, userId, userBalance }}
@@ -468,7 +467,7 @@ export default class AppDashboard extends React.Component {
       }
     ];
     this.state = {
-      friendModal: false,
+      userModal: false,
       expenseModal: false,
       editExpenseModal: false,
       allUsers,
@@ -490,8 +489,8 @@ export default class AppDashboard extends React.Component {
   }
   toggleModal = clickedBtn => {
     switch (clickedBtn) {
-      case "friend":
-        this.setState({ friendModal: !this.state.friendModal });
+      case "user":
+        this.setState({ userModal: !this.state.userModal });
         break;
       case "expense":
         this.setState({ expenseModal: !this.state.expenseModal });
@@ -502,23 +501,24 @@ export default class AppDashboard extends React.Component {
     }
   };
 
-  addFriend = friendName => {
-    let friendName = formatInput(friendName);
+  addUser = userName => {
+    let userName = formatInput(userName);
     let user = {
-      userName: friendName,
+      userName,
       userId: Date.now(),
       userBalance: 0
     };
     let allUsers = [...this.state.allUsers, user];
-    this.setState({ allUsers, friendModal: !this.state.friendModal });
     this.setState(prevState => {
       localStorage.setItem("allUsers", JSON.stringify(allUsers));
       return {
         allUsers,
-        friendModal: !prevState.friendModal
+        userModal: !prevState.userModal
       };
     });
   };
+
+  deleteuser = () => {};
 
   addExpense = ({
     expenseName,
@@ -620,11 +620,8 @@ export default class AppDashboard extends React.Component {
           editExpense={this.editExpense}
           toggleModal={this.toggleModal}
         />
-        {this.state.friendModal && (
-          <AddFriendModal
-            toggleModal={this.toggleModal}
-            addFriend={this.addFriend}
-          />
+        {this.state.userModal && (
+          <AddUserModal toggleModal={this.toggleModal} addUser={this.addUser} />
         )}
         {this.state.expenseModal && (
           <AddExpenseModal

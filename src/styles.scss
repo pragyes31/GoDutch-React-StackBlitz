@@ -74,12 +74,12 @@ body {
   color:$font-color;
 }
 
-.add-friend-btn {
+.add-user-btn {
   background-color: $secondary-color;
   color:$background-color;
 }
 
-.friend-btn {
+.user-btn {
   margin-bottom:0px;
 }
 
@@ -145,7 +145,7 @@ color:#0b6efd;
   outline:none;
 }
 
-.add-friend-modal {
+.add-user-modal {
   width: 400px;
   height: 230px;
 }
@@ -179,7 +179,7 @@ form {
   margin-bottom: 30px;
 }
 
-.add-friend-header, .friend-btn {
+.add-user-header, .user-btn {
   background-color: lighten($secondary-color, 5%);
   color:$background-color;
 }
@@ -199,7 +199,7 @@ form {
   margin:10px;
 }
 
-.friend-btn, .expense-btn {
+.user-btn, .expense-btn {
   margin-top: 15px;
   margin-bottom: 0px;
 }
@@ -208,7 +208,7 @@ form {
   margin-top:0px;
 }
 
-.friend-btn:hover {
+.user-btn:hover {
   background-color: $secondary-color;
 }
 
