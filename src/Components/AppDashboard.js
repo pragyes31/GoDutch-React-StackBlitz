@@ -396,7 +396,7 @@ function UsersData({
                   {!!userBalance && userBalance}
                 </div>
               </div>
-              <div className="delete-user" />
+              <div className="delete-user">Delete</div>
             </div>
             <ExpenseToUI
               currentUser={{ userName, userId, userBalance }}
@@ -606,6 +606,7 @@ export default class AppDashboard extends React.Component {
     );
 
     this.setState({ allExpenses });
+    this.splitExpenses();
   };
 
   render() {
