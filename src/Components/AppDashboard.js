@@ -598,6 +598,7 @@ export default class AppDashboard extends React.Component {
           });
         return { ...user, userBalance };
       });
+      localStorage.setItem("allUsers", JSON.stringify(allUsers));
       return { allUsers };
     });
   };
