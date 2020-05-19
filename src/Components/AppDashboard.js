@@ -465,7 +465,7 @@ export default class AppDashboard extends React.Component {
       expenseModal: false,
       editExpenseModal: false,
       allUsers,
-      allExpenses: [],
+      allExpenses: JSON.parse(localStorage.getItem("allExpenses")) || [],
       expenseToEdit: {
         expenseId: 0,
         expenseName: "",
@@ -562,22 +562,25 @@ export default class AppDashboard extends React.Component {
       { expenseName, expenseId, expenseAmount, selectedPartner, payer },
       ...this.state.allExpenses.slice(expenseIndex + 1)
     ];
-    this.setState({
-      allExpenses,
-      editExpenseModal: !this.state.editExpenseModal,
-      expenseToEdit: {
-        expenseId: 0,
-        expenseName: "",
-        expenseAmount: "",
-        selectedPartner: {
-          name: "",
-          id: ""
-        },
-        payer: {
-          name: "",
-          id: ""
+    this.setState(prevState => {
+      localStorage.setItem("allExpenses", JSON.stringify(allExpenses));
+      return {
+        allExpenses,
+        editExpenseModal: !this.state.editExpenseModal,
+        expenseToEdit: {
+          expenseId: 0,
+          expenseName: "",
+          expenseAmount: "",
+          selectedPartner: {
+            name: "",
+            id: ""
+          },
+          payer: {
+            name: "",
+            id: ""
+          }
         }
-      }
+      };
     });
     this.splitExpenses();
   };
