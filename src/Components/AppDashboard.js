@@ -381,7 +381,8 @@ function UsersData({
   allExpenses,
   deleteExpense,
   editExpense,
-  editExpense
+  editExpense,
+  deleteUser
 }) {
   let usersToUI = allUsers.slice(1);
   return (
@@ -396,7 +397,9 @@ function UsersData({
                   {!!userBalance && userBalance}
                 </div>
               </div>
-              <div className="delete-user">Delete</div>
+              <div className="delete-user" onClick={() => deleteUser(userId)}>
+                Delete
+              </div>
             </div>
             <ExpenseToUI
               currentUser={{ userName, userId, userBalance }}
@@ -487,6 +490,7 @@ export default class AppDashboard extends React.Component {
       }
     };
   }
+
   toggleModal = clickedBtn => {
     switch (clickedBtn) {
       case "user":
@@ -518,7 +522,16 @@ export default class AppDashboard extends React.Component {
     });
   };
 
-  deleteuser = () => {};
+  deleteUser = userId => {
+    let allUsers = this.state.allUsers.filter(user => userId !== user.userId);
+    let allExpenses = this.state.allExpenses.filter(
+      expense => userId !== expense.selectedPartner.id
+    );
+    this.setState(prevState => {
+      localStorage.setItem("allUsers", JSON.stringify(allUsers));
+      return { allUsers, allExpenses };
+    });
+  };
 
   addExpense = ({
     expenseName,
@@ -604,7 +617,6 @@ export default class AppDashboard extends React.Component {
     let allExpenses = this.state.allExpenses.filter(
       expense => expenseId !== expense.expenseId
     );
-
     this.setState({ allExpenses });
     this.splitExpenses();
   };
@@ -619,6 +631,7 @@ export default class AppDashboard extends React.Component {
           allExpenses={this.state.allExpenses}
           deleteExpense={this.deleteExpense}
           editExpense={this.editExpense}
+          deleteUser={this.deleteUser}
           toggleModal={this.toggleModal}
         />
         {this.state.userModal && (
