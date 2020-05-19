@@ -607,7 +607,10 @@ export default class AppDashboard extends React.Component {
     let allExpenses = this.state.allExpenses.filter(
       expense => expenseId !== expense.expenseId
     );
-    this.setState({ allExpenses });
+    this.setState(prevState => {
+      localStorage.setItem("allExpenses", JSON.stringify(allExpenses));
+      return { allExpenses };
+    });
     this.splitExpenses();
   };
 
