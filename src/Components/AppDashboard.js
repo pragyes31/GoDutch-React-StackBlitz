@@ -524,22 +524,17 @@ export default class AppDashboard extends React.Component {
     });
   };
 
-  addExpense = ({
-    expenseName,
-    expenseId,
-    expenseAmount,
-    selectedPartner,
-    payer
-  }) => {
-    expenseId = Date.now();
-    this.setState({
-      allExpenses: [
-        ...this.state.allExpenses,
-        { expenseName, expenseId, expenseAmount, selectedPartner, payer }
-      ],
-      expenseModal: !this.state.expenseModal
+  addExpense = expense => {
+    let expenseId = Date.now();
+    expense.expenseId = expenseId;
+    let allExpenses = [...this.state.allExpenses, { ...expense }];
+    this.setState(prevState => {
+      localStorage.setItem("allExpenses", JSON.stringify(allExpenses));
+      return {
+        allExpenses,
+        expenseModal: !prevState.expenseModal
+      };
     });
-    this.splitExpenses();
   };
 
   editExpense = expenseId => {
