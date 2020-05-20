@@ -102,7 +102,8 @@ class AddExpenseModal extends React.Component {
       expenseAmount: "",
       selectedPartner: {
         name: "",
-        id: ""
+        id: "",
+        sharePercentage: 0
       },
       payer: {
         name: "",
@@ -127,9 +128,8 @@ class AddExpenseModal extends React.Component {
     }
   };
 
-  handleRadioBtn = e => {
-    console.log(e.target.value);
-    //this.setState({equallySplit: !this.state.equallySplit})
+  handleOptionChange = e => {
+    this.setState({ equallySplit: !this.state.equallySplit });
   };
 
   render() {
@@ -170,6 +170,7 @@ class AddExpenseModal extends React.Component {
               type="number"
               value={this.state.expenseAmount}
               onChange={this.handleChange}
+              min={1}
               required
             />
           </div>
@@ -231,9 +232,9 @@ class AddExpenseModal extends React.Component {
                 type="radio"
                 id="yes"
                 name="split"
-                value={true}
-                onChange={this.handleRadioBtn}
-                checked
+                value="yes"
+                onChange={this.handleOptionChange}
+                checked={this.state.equallySplit}
               />
               <label htmlFor="yes">Yes</label>
             </div>
@@ -242,15 +243,16 @@ class AddExpenseModal extends React.Component {
                 type="radio"
                 id="no"
                 name="split"
-                value={false}
-                onChange={this.handleRadioBtn}
+                value="no"
+                onChange={this.handleOptionChange}
               />
               <label htmlFor="no">No</label>
             </div>
           </div>
           {!this.state.equallySplit && (
             <div>
-              <span>Your share: </span>
+              <label htmlFor="share-percentage">Your share: </label>
+              <input type="number" name="share-percentage" required />
             </div>
           )}
           <button type="submit" className="expense-btn modal-btn">
@@ -339,6 +341,7 @@ class EditExpenseModal extends React.Component {
               required
               value={this.state.expenseAmount}
               onChange={this.handleChange}
+              min={1}
             />
           </div>
           <div className="selectedPartner-input input-div">
