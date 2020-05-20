@@ -96,6 +96,7 @@ class AddExpenseModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      equallySplit: true,
       expenseId: 0,
       expenseName: "",
       expenseAmount: "",
@@ -124,6 +125,11 @@ class AddExpenseModal extends React.Component {
         }
       });
     }
+  };
+
+  handleRadioBtn = e => {
+    console.log(e.target.value);
+    //this.setState({equallySplit: !this.state.equallySplit})
   };
 
   render() {
@@ -218,19 +224,35 @@ class AddExpenseModal extends React.Component {
               </select>
             </div>
           )}
-          <div className='input-div'>
-          <div>Is the expense split equally?</div>
-          <div>
-  <input type="radio" id="yes" name="split" value={true}
-         checked />
-  <label htmlFor="yes">Yes</label>
-</div>
- <div>
-  <input type="radio" id="no" name="split" value={false}
-          />
-  <label htmlFor="no">No</label>
-</div>
-      </div>    
+          <div className="input-div">
+            <div>Is the expense split equally?</div>
+            <div>
+              <input
+                type="radio"
+                id="yes"
+                name="split"
+                value={true}
+                onChange={this.handleRadioBtn}
+                checked
+              />
+              <label htmlFor="yes">Yes</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                id="no"
+                name="split"
+                value={false}
+                onChange={this.handleRadioBtn}
+              />
+              <label htmlFor="no">No</label>
+            </div>
+          </div>
+          {!this.state.equallySplit && (
+            <div>
+              <span>Your share: </span>
+            </div>
+          )}
           <button type="submit" className="expense-btn modal-btn">
             Add Expense
           </button>
