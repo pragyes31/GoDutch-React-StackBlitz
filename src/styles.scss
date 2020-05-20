@@ -155,12 +155,12 @@ margin-right:25px;
 
 .add-user-modal {
   width: 400px;
-  height: 230px;
+  min-height: 230px;
 }
 
 .add-expense-modal, .edit-expense-modal {
   width: 400px;
-  height: 330px;
+  min-height: 350px;
 }
 
 form {  

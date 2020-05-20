@@ -218,6 +218,19 @@ class AddExpenseModal extends React.Component {
               </select>
             </div>
           )}
+          <div className='input-div'>
+          <div>Is the expense split equally?</div>
+          <div>
+  <input type="radio" id="yes" name="split" value={true}
+         checked />
+  <label htmlFor="yes">Yes</label>
+</div>
+ <div>
+  <input type="radio" id="no" name="split" value={false}
+          />
+  <label htmlFor="no">No</label>
+</div>
+      </div>    
           <button type="submit" className="expense-btn modal-btn">
             Add Expense
           </button>
