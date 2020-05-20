@@ -453,8 +453,8 @@ function UsersData({
           <div key={userId} className="user-data">
             <div className="user-summary">
               <div className="user-details">
-                <div className={`${userId} user-name`}>{userName}</div>
-                <div className={`${userId}-balance user-balance`}>
+                <div className={`user-name`}>{userName}</div>
+                <div className={`user-balance`}>
                   {!!userBalance && userBalance}
                 </div>
               </div>
