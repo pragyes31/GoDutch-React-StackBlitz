@@ -96,7 +96,6 @@ class AddExpenseModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      equallySplit: true,
       expenseId: 0,
       expenseName: "",
       expenseAmount: "",
@@ -112,6 +111,21 @@ class AddExpenseModal extends React.Component {
     };
   }
   handleChange = e => {
+    // switch (e.target.name) {
+    //   case ("expenseName" || "expenseAmount"):
+    //     this.setState({
+    //       [e.target.name]: e.target.value
+    //     });
+    //     case ("selectedPartner" || "payer"):
+    //     this.setState({
+    //     [e.target.name]: {
+    //       name: e.target.value,
+    //       id: +e.target.options[e.target.selectedIndex].getAttribute(
+    //         "data-userkey"
+    //       )
+    //     }
+    //   });
+    // }
     if (e.target.name === "expenseName" || e.target.name === "expenseAmount") {
       this.setState({
         [e.target.name]: e.target.value
@@ -122,7 +136,8 @@ class AddExpenseModal extends React.Component {
           name: e.target.value,
           id: +e.target.options[e.target.selectedIndex].getAttribute(
             "data-userkey"
-          )
+          ),
+          sharePercentage: 0
         }
       });
     }
@@ -130,6 +145,10 @@ class AddExpenseModal extends React.Component {
 
   handleOptionChange = e => {
     this.setState({ equallySplit: !this.state.equallySplit });
+  };
+
+  handlePercentage = e => {
+    this.setState({ selectedPartner: {} });
   };
 
   render() {
@@ -225,7 +244,7 @@ class AddExpenseModal extends React.Component {
               </select>
             </div>
           )}
-          <div className="input-div">
+          {/* <div className="input-div">
             <div>Is the expense split equally?</div>
             <div>
               <input
@@ -252,9 +271,16 @@ class AddExpenseModal extends React.Component {
           {!this.state.equallySplit && (
             <div>
               <label htmlFor="share-percentage">Your share: </label>
-              <input type="number" name="share-percentage" required />
+              <input
+                type="number"
+                name="share-percentage"
+                min={0}
+                onChange={this.handlePercentage}
+                value={this.state.selectedPartner.sharePercentage}
+                required
+              />
             </div>
-          )}
+          )} */}
           <button type="submit" className="expense-btn modal-btn">
             Add Expense
           </button>
