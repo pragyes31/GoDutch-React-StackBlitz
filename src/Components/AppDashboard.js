@@ -151,12 +151,15 @@ class AddExpenseModal extends React.Component {
       });
     } else if (e.target.name === "split") {
       this.setState({ equallySplit: !this.state.equallySplit });
+    } else if (e.target.name === "share-percentage") {
+      this.setState({
+        selectedPartner: {
+          ...this.state.selectedPartner,
+          sharePercentage: +e.target.value
+        }
+      });
     }
   };
-
-  // handleOptionChange = e => {
-  //   this.setState({ equallySplit: !this.state.equallySplit });
-  // };
 
   handlePercentage = e => {
     this.setState({ selectedPartner: {} });
@@ -279,15 +282,17 @@ class AddExpenseModal extends React.Component {
               <label htmlFor="no">No</label>
             </div>
           </div>
-          {!this.state.equallySplit && (
+          {!this.state.equallySplit && this.state.selectedPartner.name && (
             <div className="input-div">
-              <label htmlFor="share-percentage">Your share: </label>
+              <label htmlFor="share-percentage">
+                {this.state.selectedPartner.name}'s share:
+              </label>
               <input
                 type="number"
                 name="share-percentage"
                 min={0}
                 max={100}
-                onChange={this.handlePercentage}
+                onChange={this.handleChange}
                 value={this.state.selectedPartner.sharePercentage}
                 required
               />
@@ -496,6 +501,7 @@ function ExpenseToUI({
   editExpense,
   allUsers
 }) {
+  console.log(allExpenses);
   return (
     <div className="user-balance-sheet">
       {allExpenses.map(
