@@ -332,16 +332,20 @@ class EditExpenseModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      equallySplit: this.props.expenseToEdit.equallySplit,
       expenseId: this.props.expenseToEdit.expenseId,
       expenseName: this.props.expenseToEdit.expenseName,
       expenseAmount: this.props.expenseToEdit.expenseAmount,
       selectedPartner: {
         name: this.props.expenseToEdit.selectedPartner.name,
-        id: this.props.expenseToEdit.selectedPartner.id
+        id: this.props.expenseToEdit.selectedPartner.id,
+        sharePercentage: this.props.expenseToEdit.selectedPartner
+          .sharePercentage
       },
       payer: {
         name: this.props.expenseToEdit.payer.name,
-        id: this.props.expenseToEdit.payer.id
+        id: this.props.expenseToEdit.payer.id,
+        sharePercentage: this.props.expenseToEdit.payer.sharePercentage
       }
     };
   }
@@ -449,6 +453,46 @@ class EditExpenseModal extends React.Component {
                   {this.state.selectedPartner.name}
                 </option>
               </select>
+            </div>
+          )}
+          <div className="input-div">
+            <div>Is this expense split equally?</div>
+            <div>
+              <input
+                type="radio"
+                id="yes"
+                name="split"
+                value="yes"
+                onChange={this.handleChange}
+                checked={this.state.equallySplit}
+              />
+              <label htmlFor="yes">Yes</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                id="no"
+                name="split"
+                value="no"
+                onChange={this.handleChange}
+              />
+              <label htmlFor="no">No</label>
+            </div>
+          </div>
+          {!this.state.equallySplit && this.state.selectedPartner.name && (
+            <div className="input-div">
+              <label htmlFor="share-percentage">
+                {this.state.selectedPartner.name}'s share:
+              </label>
+              <input
+                type="number"
+                name="share-percentage"
+                min={0}
+                max={100}
+                onChange={this.handleChange}
+                value={this.state.selectedPartner.sharePercentage}
+                required
+              />
             </div>
           )}
           <button type="submit" className="expense-btn modal-btn">
@@ -688,10 +732,11 @@ export default class AppDashboard extends React.Component {
           .filter(expense => expense.selectedPartner.id === user.userId)
           .forEach(expense => {
             let share =
-              expense.expenseAmount * (expense.selectedPartner.sharePercentage / 100);
+              expense.expenseAmount *
+              (expense.selectedPartner.sharePercentage / 100);
             expense.payer.name === "You"
               ? (userBalance -= share)
-              : (userBalance += (expense.expenseAmount - share));
+              : (userBalance += expense.expenseAmount - share);
           });
         return { ...user, userBalance };
       });
