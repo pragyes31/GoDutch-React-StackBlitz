@@ -687,9 +687,11 @@ export default class AppDashboard extends React.Component {
         prevState.allExpenses
           .filter(expense => expense.selectedPartner.id === user.userId)
           .forEach(expense => {
+            let share =
+              expense.expenseAmount * (expense.selectedPartner.sharePercentage / 100);
             expense.payer.name === "You"
-              ? (userBalance -= expense.expenseAmount / 2)
-              : (userBalance += expense.expenseAmount / 2);
+              ? (userBalance -= share)
+              : (userBalance += (expense.expenseAmount - share));
           });
         return { ...user, userBalance };
       });
