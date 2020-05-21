@@ -96,6 +96,7 @@ class AddExpenseModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      equallySplit: true,
       expenseId: 0,
       expenseName: "",
       expenseAmount: "",
@@ -111,26 +112,34 @@ class AddExpenseModal extends React.Component {
     };
   }
   handleChange = e => {
-    // switch (e.target.name) {
-    //   case ("expenseName" || "expenseAmount"):
+    // let name = e.target.name
+    // switch (name) {
+    //   case "expenseName":
     //     this.setState({
     //       [e.target.name]: e.target.value
     //     });
-    //     case ("selectedPartner" || "payer"):
+    //   case "expenseAmount":
     //     this.setState({
-    //     [e.target.name]: {
-    //       name: e.target.value,
-    //       id: +e.target.options[e.target.selectedIndex].getAttribute(
-    //         "data-userkey"
-    //       )
-    //     }
-    //   });
+    //       [e.target.name]: e.target.value
+    //     });
+    //   case "selectedPartner" || "payer":
+    //     this.setState({
+    //       [e.target.name]: {
+    //         name: e.target.value,
+    //         id: +e.target.options[e.target.selectedIndex].getAttribute(
+    //           "data-userkey"
+    //         )
+    //       }
+    //     });
     // }
     if (e.target.name === "expenseName" || e.target.name === "expenseAmount") {
       this.setState({
         [e.target.name]: e.target.value
       });
-    } else {
+    } else if (
+      e.target.name === "selectedPartner" ||
+      e.target.name === "payer"
+    ) {
       this.setState({
         [e.target.name]: {
           name: e.target.value,
@@ -140,12 +149,14 @@ class AddExpenseModal extends React.Component {
           sharePercentage: 0
         }
       });
+    } else if (e.target.name === "split") {
+      this.setState({ equallySplit: !this.state.equallySplit });
     }
   };
 
-  handleOptionChange = e => {
-    this.setState({ equallySplit: !this.state.equallySplit });
-  };
+  // handleOptionChange = e => {
+  //   this.setState({ equallySplit: !this.state.equallySplit });
+  // };
 
   handlePercentage = e => {
     this.setState({ selectedPartner: {} });
@@ -244,15 +255,15 @@ class AddExpenseModal extends React.Component {
               </select>
             </div>
           )}
-          {/* <div className="input-div">
-            <div>Is the expense split equally?</div>
+          <div className="input-div">
+            <div>Is this expense split equally?</div>
             <div>
               <input
                 type="radio"
                 id="yes"
                 name="split"
                 value="yes"
-                onChange={this.handleOptionChange}
+                onChange={this.handleChange}
                 checked={this.state.equallySplit}
               />
               <label htmlFor="yes">Yes</label>
@@ -263,24 +274,25 @@ class AddExpenseModal extends React.Component {
                 id="no"
                 name="split"
                 value="no"
-                onChange={this.handleOptionChange}
+                onChange={this.handleChange}
               />
               <label htmlFor="no">No</label>
             </div>
           </div>
           {!this.state.equallySplit && (
-            <div>
+            <div className="input-div">
               <label htmlFor="share-percentage">Your share: </label>
               <input
                 type="number"
                 name="share-percentage"
                 min={0}
+                max={100}
                 onChange={this.handlePercentage}
                 value={this.state.selectedPartner.sharePercentage}
                 required
               />
             </div>
-          )} */}
+          )}
           <button type="submit" className="expense-btn modal-btn">
             Add Expense
           </button>
@@ -589,8 +601,7 @@ export default class AppDashboard extends React.Component {
   };
 
   addExpense = expense => {
-    let expenseId = Date.now();
-    expense.expenseId = expenseId;
+    expense.expenseId = Date.now();
     let allExpenses = [...this.state.allExpenses, { ...expense }];
     this.setState(prevState => {
       localStorage.setItem("allExpenses", JSON.stringify(allExpenses));
@@ -599,6 +610,7 @@ export default class AppDashboard extends React.Component {
         expenseModal: !prevState.expenseModal
       };
     });
+    this.splitExpenses();
   };
 
   editExpense = expenseId => {
