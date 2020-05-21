@@ -103,11 +103,12 @@ class AddExpenseModal extends React.Component {
       selectedPartner: {
         name: "",
         id: "",
-        sharePercentage: 0
+        sharePercentage: 50
       },
       payer: {
         name: "",
-        id: ""
+        id: "",
+        sharePercentage: 50
       }
     };
   }
@@ -150,19 +151,31 @@ class AddExpenseModal extends React.Component {
         }
       });
     } else if (e.target.name === "split") {
+      if (e.target.value === "yes") {
+        this.setState({
+          selectedPartner: {
+            ...this.state.selectedPartner,
+            sharePercentage: +50
+          },
+          payer: {
+            ...this.state.payer,
+            sharePercentage: 50
+          }
+        });
+      }
       this.setState({ equallySplit: !this.state.equallySplit });
     } else if (e.target.name === "share-percentage") {
       this.setState({
         selectedPartner: {
           ...this.state.selectedPartner,
           sharePercentage: +e.target.value
+        },
+        payer: {
+          ...this.state.payer,
+          sharePercentage: 100 - +e.target.value
         }
       });
     }
-  };
-
-  handlePercentage = e => {
-    this.setState({ selectedPartner: {} });
   };
 
   render() {
