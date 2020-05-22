@@ -137,17 +137,24 @@ class AddExpenseModal extends React.Component {
       this.setState({
         [e.target.name]: e.target.value
       });
-    } else if (
-      e.target.name === "selectedPartner" ||
-      e.target.name === "payer"
-    ) {
+    } else if (e.target.name === "selectedPartner") {
       this.setState({
-        [e.target.name]: {
+        selectedPartner: {
+          ...this.state.selectedPartner,
           name: e.target.value,
           id: +e.target.options[e.target.selectedIndex].getAttribute(
             "data-userkey"
-          ),
-          sharePercentage: 0
+          )
+        }
+      });
+    } else if (e.target.name === "payer") {
+      this.setState({
+        payer: {
+          ...this.state.payer,
+          name: e.target.value,
+          id: +e.target.options[e.target.selectedIndex].getAttribute(
+            "data-userkey"
+          )
         }
       });
     } else if (e.target.name === "split") {
@@ -608,7 +615,7 @@ function ExpenseToUI({
                     className="edit-expense"
                     onClick={() => editExpense(expenseId)}
                   >
-                    Edit
+                    View/Edit
                   </div>
                   <div
                     className="delete-expense"
