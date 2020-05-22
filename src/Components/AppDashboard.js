@@ -113,26 +113,6 @@ class AddExpenseModal extends React.Component {
     };
   }
   handleChange = e => {
-    // let name = e.target.name
-    // switch (name) {
-    //   case "expenseName":
-    //     this.setState({
-    //       [e.target.name]: e.target.value
-    //     });
-    //   case "expenseAmount":
-    //     this.setState({
-    //       [e.target.name]: e.target.value
-    //     });
-    //   case "selectedPartner" || "payer":
-    //     this.setState({
-    //       [e.target.name]: {
-    //         name: e.target.value,
-    //         id: +e.target.options[e.target.selectedIndex].getAttribute(
-    //           "data-userkey"
-    //         )
-    //       }
-    //     });
-    // }
     if (e.target.name === "expenseName" || e.target.name === "expenseAmount") {
       this.setState({
         [e.target.name]: e.target.value
@@ -363,17 +343,24 @@ class EditExpenseModal extends React.Component {
       this.setState({
         [e.target.name]: e.target.value
       });
-    } else if (
-      e.target.name === "selectedPartner" ||
-      e.target.name === "payer"
-    ) {
+    } else if (e.target.name === "selectedPartner") {
       this.setState({
-        [e.target.name]: {
+        selectedPartner: {
+          ...this.state.selectedPartner,
           name: e.target.value,
           id: +e.target.options[e.target.selectedIndex].getAttribute(
             "data-userkey"
-          ),
-          sharePercentage: 0
+          )
+        }
+      });
+    } else if (e.target.name === "payer") {
+      this.setState({
+        payer: {
+          ...this.state.payer,
+          name: e.target.value,
+          id: +e.target.options[e.target.selectedIndex].getAttribute(
+            "data-userkey"
+          )
         }
       });
     } else if (e.target.name === "split") {
