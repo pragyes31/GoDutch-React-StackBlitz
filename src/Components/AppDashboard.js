@@ -291,6 +291,7 @@ class AddExpenseModal extends React.Component {
                 name="split"
                 value="no"
                 onChange={this.handleChange}
+                checked={!this.state.equallySplit}
               />
               <label htmlFor="no">No</label>
             </div>
@@ -355,13 +356,42 @@ class EditExpenseModal extends React.Component {
       this.setState({
         [e.target.name]: e.target.value
       });
-    } else {
+    } else if (
+      e.target.name === "selectedPartner" ||
+      e.target.name === "payer"
+    ) {
       this.setState({
         [e.target.name]: {
           name: e.target.value,
           id: +e.target.options[e.target.selectedIndex].getAttribute(
             "data-userkey"
-          )
+          ),
+          sharePercentage: 0
+        }
+      });
+    } else if (e.target.name === "split") {
+      if (e.target.value === "yes") {
+        this.setState({
+          selectedPartner: {
+            ...this.state.selectedPartner,
+            sharePercentage: +50
+          },
+          payer: {
+            ...this.state.payer,
+            sharePercentage: 50
+          }
+        });
+      }
+      this.setState({ equallySplit: !this.state.equallySplit });
+    } else if (e.target.name === "share-percentage") {
+      this.setState({
+        selectedPartner: {
+          ...this.state.selectedPartner,
+          sharePercentage: +e.target.value
+        },
+        payer: {
+          ...this.state.payer,
+          sharePercentage: 100 - +e.target.value
         }
       });
     }
@@ -475,6 +505,7 @@ class EditExpenseModal extends React.Component {
                 name="split"
                 value="no"
                 onChange={this.handleChange}
+                checked={!this.state.equallySplit}
               />
               <label htmlFor="no">No</label>
             </div>
