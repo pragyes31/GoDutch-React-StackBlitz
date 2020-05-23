@@ -46,6 +46,7 @@ function FilterUsers() {
           id="showAllUsers"
           name="filterUsers"
           value="showAllUsers"
+          className="filter-Users-Btn"
         />
         <label for="showAllUsers">Show all users</label>
       </div>
