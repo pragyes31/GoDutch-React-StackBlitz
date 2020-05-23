@@ -37,6 +37,36 @@ function AddNewBtns({ toggleModal }) {
   );
 }
 
+function filterUsers() {
+  return (
+    <div>
+      <input
+        type="radio"
+        id="showAllUsers"
+        name="showAllUsers"
+        value="showAllUsers"
+      />
+      <label for="showAllUsers">Show all users</label>
+
+      <input
+        type="radio"
+        id="usersOweYou"
+        name="usersOweYou"
+        value="usersOweYou"
+      />
+      <label for="usersOweYou">Users who owe you</label>
+
+      <input
+        type="radio"
+        id="usersYouOwe"
+        name="usersYouOwe"
+        value="usersYouOwe"
+      />
+      <label for="usersYouOwe">Users you owe</label>
+    </div>
+  );
+}
+
 class AddUserModal extends React.Component {
   constructor(props) {
     super(props);
