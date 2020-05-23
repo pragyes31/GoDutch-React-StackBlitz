@@ -37,32 +37,36 @@ function AddNewBtns({ toggleModal }) {
   );
 }
 
-function filterUsers() {
+function FilterUsers() {
   return (
-    <div>
-      <input
-        type="radio"
-        id="showAllUsers"
-        name="showAllUsers"
-        value="showAllUsers"
-      />
-      <label for="showAllUsers">Show all users</label>
-
-      <input
-        type="radio"
-        id="usersOweYou"
-        name="usersOweYou"
-        value="usersOweYou"
-      />
-      <label for="usersOweYou">Users who owe you</label>
-
-      <input
-        type="radio"
-        id="usersYouOwe"
-        name="usersYouOwe"
-        value="usersYouOwe"
-      />
-      <label for="usersYouOwe">Users you owe</label>
+    <div className="filter-users">
+      <div>
+        <input
+          type="radio"
+          id="showAllUsers"
+          name="filterUsers"
+          value="showAllUsers"
+        />
+        <label for="showAllUsers">Show all users</label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          id="usersOweYou"
+          name="filterUsers"
+          value="usersOweYou"
+        />
+        <label for="usersOweYou">Users who owe you</label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          id="usersYouOwe"
+          name="filterUsers"
+          value="usersYouOwe"
+        />
+        <label for="usersYouOwe">Users you owe</label>
+      </div>
     </div>
   );
 }
@@ -816,6 +820,7 @@ export default class AppDashboard extends React.Component {
       <div className="app-dashboard">
         <Header title="Go-Dutch App" />
         <AddNewBtns toggleModal={this.toggleModal} />
+        <FilterUsers />
         <UsersData
           allUsers={this.state.allUsers}
           allExpenses={this.state.allExpenses}

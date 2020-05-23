@@ -39,12 +39,12 @@ body {
 
 .main-title {
   @include flex-position(center, center);
-  background-color: $background-color;
   height: 3rem;
   font-size: 1.4rem;
   font-family: "Raleway", serif;
   font-weight: bold;
   color: $primary-color;
+  background-color: $background-color;
 }
 
 .app-dashboard {
@@ -79,13 +79,12 @@ body {
   color:$background-color;
 }
 
-.user-btn {
-  margin-bottom:0px;
-}
-
-
-.users-data {
-  margin-top: 50px;
+.filter-users {
+    @include flex-position(space-around, center);
+    margin-top:50px;
+    padding: 10px;
+    color:  $primary-color;
+    background-color: #ffc;
 }
 
 .user-data {
