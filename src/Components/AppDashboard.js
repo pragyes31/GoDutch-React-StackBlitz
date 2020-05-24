@@ -731,6 +731,22 @@ export default class AppDashboard extends React.Component {
     });
   };
 
+  filterUsers = filterName => {
+    if (filterName === "showAllUsers") {
+      this.setState({ usersToDisplay: this.state.allUsers });
+    } else if (filterName === "usersOweYou") {
+      let usersOweYou = this.state.allUsers.filter(
+        ({ selectedPartner }) => selectedPartner.userBalance < 0
+      );
+      this.setState({ usersToDisplay: usersOweYou });
+    } else if (filterName === "usersYouOwe") {
+      let usersYouOwe = this.state.allUsers.filter(
+        ({ selectedPartner }) => selectedPartner.userBalance >= 0
+      );
+      this.setState({ usersToDisplay: usersYouOwe });
+    }
+  };
+
   deleteUser = userId => {
     let allUsers = this.state.allUsers.filter(user => userId !== user.userId);
     let allExpenses = this.state.allExpenses.filter(
@@ -840,7 +856,10 @@ export default class AppDashboard extends React.Component {
       <div className="app-dashboard">
         <Header title="Go-Dutch App" />
         <AddNewBtns toggleModal={this.toggleModal} />
-        <FilterUsers allUsers={this.state.allUsers} />
+        <FilterUsers
+          allUsers={this.state.allUsers}
+          usersToDisplay={this.state.usersToDisplay}
+        />
         <UsersData
           allUsers={this.state.allUsers}
           allExpenses={this.state.allExpenses}
