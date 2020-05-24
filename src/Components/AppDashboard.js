@@ -37,39 +37,47 @@ function AddNewBtns({ toggleModal }) {
   );
 }
 
-function FilterUsers() {
-  return (
-    <div className="filter-users">
-      <div>
-        <input
-          type="radio"
-          id="showAllUsers"
-          name="filterUsers"
-          value="showAllUsers"
-          className="filter-Users-Btn"
-        />
-        <label for="showAllUsers">Show all users</label>
+class FilterUsers extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      checked: true
+    };
+  }
+  render() {
+    return (
+      <div className="filter-users">
+        <div>
+          <input
+            type="radio"
+            id="showAllUsers"
+            name="filterUsers"
+            value="showAllUsers"
+            className="filter-Users-Btn"
+          />
+          <label for="showAllUsers">Show all users</label>
+        </div>
+        <div>
+          <input
+            type="radio"
+            id="usersOweYou"
+            name="filterUsers"
+            value="usersOweYou"
+          />
+          <label for="usersOweYou">Users who owe you</label>
+        </div>
+        <div>
+          <input
+            type="radio"
+            id="usersYouOwe"
+            name="filterUsers"
+            value="usersYouOwe"
+          />
+          <label for="usersYouOwe">Users you owe</label>
+        </div>
       </div>
-      <div>
-        <input
-          type="radio"
-          id="usersOweYou"
-          name="filterUsers"
-          value="usersOweYou"
-        />
-        <label for="usersOweYou">Users who owe you</label>
-      </div>
-      <div>
-        <input
-          type="radio"
-          id="usersYouOwe"
-          name="filterUsers"
-          value="usersYouOwe"
-        />
-        <label for="usersYouOwe">Users you owe</label>
-      </div>
-    </div>
-  );
+    );
+  }
 }
 
 class AddUserModal extends React.Component {
