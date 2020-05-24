@@ -40,18 +40,7 @@ function AddNewBtns({ toggleModal }) {
 class FilterUsers extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      value: "showAllUsers"
-    };
   }
-  handleChange = e => {
-    if (e.target.value === "showAllUsers") {
-    } else if (e.target.value === "usersOweYou") {
-      console.log("usersOweYou");
-    } else if (e.target.value === "usersYouOwe") {
-      console.log("usersYouOwe");
-    }
-  };
   render() {
     return (
       <div className="filter-users">
@@ -62,7 +51,7 @@ class FilterUsers extends React.Component {
             name="filterUsers"
             value="showAllUsers"
             className="filter-Users-Btn"
-            onChange={this.handleChange}
+            onChange={() => this.props.filterUsers("showAllUsers")}
           />
           <label forName="showAllUsers">Show all users</label>
         </div>
@@ -72,7 +61,7 @@ class FilterUsers extends React.Component {
             id="usersOweYou"
             name="filterUsers"
             value="usersOweYou"
-            onChange={this.handleChange}
+            onChange={() => this.props.filterUsers("usersOweYou")}
           />
           <label forName="usersOweYou">Users who owe you</label>
         </div>
@@ -82,7 +71,7 @@ class FilterUsers extends React.Component {
             id="usersYouOwe"
             name="filterUsers"
             value="usersYouOwe"
-            onChange={this.handleChange}
+            onChange={() => this.props.filterUsers("usersYouOwe")}
           />
           <label forName="usersYouOwe">Users you owe</label>
         </div>
@@ -593,6 +582,7 @@ class EditExpenseModal extends React.Component {
 
 function UsersData({
   allUsers,
+  usersToDisplay,
   allExpenses,
   deleteExpense,
   editExpense,
@@ -601,7 +591,7 @@ function UsersData({
 }) {
   return (
     <div className="users-data">
-      {allUsers.map(({ userName, userId, userBalance }) => {
+      {usersToDisplay.map(({ userName, userId, userBalance }) => {
         return (
           <div key={userId} className="user-data">
             <div className="user-summary">
@@ -630,13 +620,7 @@ function UsersData({
   );
 }
 
-function ExpenseToUI({
-  currentUser,
-  allExpenses,
-  deleteExpense,
-  editExpense,
-  allUsers
-}) {
+function ExpenseToUI({ currentUser, allExpenses, deleteExpense, editExpense }) {
   return (
     <div className="user-balance-sheet">
       {allExpenses.map(
@@ -682,7 +666,7 @@ export default class AppDashboard extends React.Component {
       expenseModal: false,
       editExpenseModal: false,
       allUsers,
-      usersToDisplay: [],
+      usersToDisplay: allUsers,
       allExpenses: JSON.parse(localStorage.getItem("allExpenses")) || [],
       expenseToEdit: {
         expenseId: 0,
@@ -736,12 +720,12 @@ export default class AppDashboard extends React.Component {
       this.setState({ usersToDisplay: this.state.allUsers });
     } else if (filterName === "usersOweYou") {
       let usersOweYou = this.state.allUsers.filter(
-        ({ selectedPartner }) => selectedPartner.userBalance < 0
+        user => user.userBalance < 0
       );
       this.setState({ usersToDisplay: usersOweYou });
     } else if (filterName === "usersYouOwe") {
       let usersYouOwe = this.state.allUsers.filter(
-        ({ selectedPartner }) => selectedPartner.userBalance >= 0
+        user => user.userBalance >= 0
       );
       this.setState({ usersToDisplay: usersYouOwe });
     }
@@ -859,6 +843,7 @@ export default class AppDashboard extends React.Component {
         <FilterUsers
           allUsers={this.state.allUsers}
           usersToDisplay={this.state.usersToDisplay}
+          filterUsers={this.filterUsers}
         />
         <UsersData
           allUsers={this.state.allUsers}
@@ -867,6 +852,7 @@ export default class AppDashboard extends React.Component {
           editExpense={this.editExpense}
           deleteUser={this.deleteUser}
           toggleModal={this.toggleModal}
+          usersToDisplay={this.state.usersToDisplay}
         />
         {this.state.userModal && (
           <AddUserModal toggleModal={this.toggleModal} addUser={this.addUser} />
