@@ -664,6 +664,7 @@ export default class AppDashboard extends React.Component {
       expenseModal: false,
       editExpenseModal: false,
       allUsers,
+      usersToDisplay: [],
       allExpenses: JSON.parse(localStorage.getItem("allExpenses")) || [],
       expenseToEdit: {
         expenseId: 0,
