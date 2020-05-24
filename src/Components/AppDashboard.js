@@ -41,9 +41,17 @@ class FilterUsers extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      checked: true
+      value: "showAllUsers"
     };
   }
+  handleChange = e => {
+    if (e.target.value === "showAllUsers") {
+    } else if (e.target.value === "usersOweYou") {
+      console.log("usersOweYou");
+    } else if (e.target.value === "usersYouOwe") {
+      console.log("usersYouOwe");
+    }
+  };
   render() {
     return (
       <div className="filter-users">
@@ -54,8 +62,9 @@ class FilterUsers extends React.Component {
             name="filterUsers"
             value="showAllUsers"
             className="filter-Users-Btn"
+            onChange={this.handleChange}
           />
-          <label for="showAllUsers">Show all users</label>
+          <label forName="showAllUsers">Show all users</label>
         </div>
         <div>
           <input
@@ -63,8 +72,9 @@ class FilterUsers extends React.Component {
             id="usersOweYou"
             name="filterUsers"
             value="usersOweYou"
+            onChange={this.handleChange}
           />
-          <label for="usersOweYou">Users who owe you</label>
+          <label forName="usersOweYou">Users who owe you</label>
         </div>
         <div>
           <input
@@ -72,8 +82,9 @@ class FilterUsers extends React.Component {
             id="usersYouOwe"
             name="filterUsers"
             value="usersYouOwe"
+            onChange={this.handleChange}
           />
-          <label for="usersYouOwe">Users you owe</label>
+          <label forName="usersYouOwe">Users you owe</label>
         </div>
       </div>
     );
@@ -626,7 +637,6 @@ function ExpenseToUI({
   editExpense,
   allUsers
 }) {
-  console.log(allExpenses);
   return (
     <div className="user-balance-sheet">
       {allExpenses.map(
@@ -830,7 +840,7 @@ export default class AppDashboard extends React.Component {
       <div className="app-dashboard">
         <Header title="Go-Dutch App" />
         <AddNewBtns toggleModal={this.toggleModal} />
-        <FilterUsers />
+        <FilterUsers allUsers={this.state.allUsers} />
         <UsersData
           allUsers={this.state.allUsers}
           allExpenses={this.state.allExpenses}
