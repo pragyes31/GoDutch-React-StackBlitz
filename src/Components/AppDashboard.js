@@ -53,7 +53,7 @@ class FilterUsers extends React.Component {
             className="filter-Users-Btn"
             onChange={() => this.props.filterUsers("showAllUsers")}
           />
-          <label forName="showAllUsers">Show all users</label>
+          <label forname="showAllUsers">Show all users</label>
         </div>
         <div>
           <input
@@ -63,7 +63,7 @@ class FilterUsers extends React.Component {
             value="usersOweYou"
             onChange={() => this.props.filterUsers("usersOweYou")}
           />
-          <label forName="usersOweYou">Users who owe you</label>
+          <label forname="usersOweYou">Users who owe you</label>
         </div>
         <div>
           <input
@@ -73,7 +73,7 @@ class FilterUsers extends React.Component {
             value="usersYouOwe"
             onChange={() => this.props.filterUsers("usersYouOwe")}
           />
-          <label forName="usersYouOwe">Users you owe</label>
+          <label forname="usersYouOwe">Users you owe</label>
         </div>
       </div>
     );
